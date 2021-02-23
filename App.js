@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import FooterComponent from "./Components/FooterComponent";
 import HeaderComponent from "./Components/HeaderComponent";
 
 export default function App() {
@@ -13,7 +14,7 @@ export default function App() {
           <StatusBar style="auto" />
         </ScrollView>
         <View>
-          <Text>footer</Text>
+          <FooterComponent></FooterComponent>
         </View>
       </View>
     </SafeAreaProvider>
