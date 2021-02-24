@@ -8,7 +8,7 @@ import HeaderComponent from "./Components/HeaderComponent";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <ScrollView>
           <HeaderComponent></HeaderComponent>
           <StatusBar style="auto" />
@@ -24,8 +24,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#e5e5e5",
   },
 });
