@@ -1,7 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { Icon, Badge } from "react-native-elements";
-import React, { useState } from "react";
+import React from "react";
+import Context from "../Context/ContextProvider";
+import { useContext } from "react";
 
 const styles = EStyleSheet.create({
   footer: {
@@ -36,28 +38,34 @@ const styles = EStyleSheet.create({
 });
 
 export default function FooterComponent() {
-  const [active, setactive] = useState(1);
+  const { navigation, changeNavigation } = useContext(Context);
+  console.log("Footer mounted.", navigation);
+
   const iconsData = [
     {
       id: 1,
       name: "home",
       type: "font-awesome",
+      component: "Home",
     },
     {
       id: 2,
       name: "exchange",
       type: "font-awesome",
+      component: "Exchange",
     },
     {
       id: 3,
       name: "bell-o",
       type: "font-awesome",
       notifications: 10,
+      component: "Notifications",
     },
     {
       id: 4,
       name: "plus",
       type: "font-awesome",
+      component: "Add",
     },
   ];
   return (
@@ -66,17 +74,21 @@ export default function FooterComponent() {
         <View style={{ position: "relative" }} key={iconData.id}>
           <Icon
             style={
-              iconData.id === active
+              navigation === iconData.component
                 ? [styles.icon, styles.iconActive]
                 : styles.icon
             }
             {...iconData}
-            color={iconData.id === active ? "rgb(32, 137, 220)" : "#000000"}
-            onPress={() => setactive(iconData.id)}
+            color={
+              navigation === iconData.component
+                ? "rgb(32, 137, 220)"
+                : "#000000"
+            }
+            onPress={() => changeNavigation(iconData.component)}
           ></Icon>
           {iconData.notifications > 0 && (
             <Badge
-              onPress={() => setactive(iconData.id)}
+              onPress={() => changeNavigation(iconData.component)}
               containerStyle={styles.badge}
               value="9+"
               status="error"

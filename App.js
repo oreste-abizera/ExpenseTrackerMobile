@@ -3,11 +3,10 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import FooterComponent from "./Components/FooterComponent";
-import TestComponent from "./Components/TestComponent";
 import HeaderComponent from "./Components/HeaderComponent";
 import EStyleSheet from "react-native-extended-stylesheet";
-import MainScreen from "./Screens/MainScreen";
-import NotificationsScreen from "./Screens/NotificationsScreen";
+import { ContextProvider } from "./Context/ContextProvider";
+import Routes from "./Screens/Routes";
 
 EStyleSheet.build({
   $textColor: "#0275d8",
@@ -16,19 +15,21 @@ EStyleSheet.build({
 export default function App() {
   console.log("Expense Tracker App started......");
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <ScrollView>
-          <HeaderComponent></HeaderComponent>
-          {/* <MainScreen></MainScreen> */}
-          <NotificationsScreen></NotificationsScreen>
-          <StatusBar style="auto" />
-        </ScrollView>
-        <View>
-          <FooterComponent></FooterComponent>
+    <ContextProvider>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <ScrollView>
+            <HeaderComponent></HeaderComponent>
+            <Routes></Routes>
+            {/* <NotificationsScreen></NotificationsScreen> */}
+            <StatusBar style="auto" />
+          </ScrollView>
+          <View>
+            <FooterComponent></FooterComponent>
+          </View>
         </View>
-      </View>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </ContextProvider>
   );
 }
 
