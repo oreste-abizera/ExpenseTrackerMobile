@@ -6,6 +6,7 @@ import FooterComponent from './Components/FooterComponent';
 import TestComponent from './Components/TestComponent';
 import HeaderComponent from './Components/HeaderComponent';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import MainScreen from './Screens/MainScreen';
 
 EStyleSheet.build({
   $textColor: '#0275d8',
@@ -18,7 +19,7 @@ export default function App() {
       <View style={styles.container}>
         <ScrollView>
           <HeaderComponent></HeaderComponent>
-          <TestComponent></TestComponent>
+          <MainScreen></MainScreen>
           <StatusBar style="auto" />
         </ScrollView>
         <View>
