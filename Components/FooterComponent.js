@@ -39,7 +39,6 @@ const styles = EStyleSheet.create({
 
 export default function FooterComponent() {
   const { navigation, changeNavigation } = useContext(Context);
-  console.log("Footer mounted.", navigation);
 
   const iconsData = [
     {
@@ -52,7 +51,7 @@ export default function FooterComponent() {
       id: 2,
       name: "exchange",
       type: "font-awesome",
-      component: "Exchange",
+      component: "Exchanges",
     },
     {
       id: 3,
