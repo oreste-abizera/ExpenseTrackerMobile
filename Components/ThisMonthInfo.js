@@ -11,6 +11,7 @@ import {
 import { Dimensions } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { Icon } from "react-native-elements";
+import Context from "../Context/ContextProvider";
 
 const styles = EStyleSheet.create({
   currentMonth: {
@@ -51,9 +52,9 @@ const chartConfig = {
 };
 
 export default function ThisMonthInfo() {
-  const expenses = 15000,
-    income = 13000,
-    expensesColor = "#e81f3d",
+  const { getTotals } = React.useContext(Context);
+  const { expenses, income } = getTotals();
+  const expensesColor = "#e81f3d",
     incomeColor = "rgba(131, 167, 234, 1)",
     balanceColor = "#8c32a8";
   const data = [
