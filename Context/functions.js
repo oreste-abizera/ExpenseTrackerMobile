@@ -8,6 +8,7 @@ export async function loadTransactions(token) {
   if (response.data) {
     return response.data.data;
   }
+  return [];
 }
 
 export async function loadExpenses(token) {
@@ -17,6 +18,7 @@ export async function loadExpenses(token) {
   if (response.data) {
     return response.data.data;
   }
+  return [];
 }
 
 export async function loadIncomes(token) {
@@ -26,4 +28,14 @@ export async function loadIncomes(token) {
   if (response.data) {
     return response.data.data;
   }
+  return [];
+}
+
+export async function loadCategories() {
+  let response = await axios.get(`${url}/api/categories`);
+  if (response.data) {
+    return response.data.data;
+  }
+
+  return [];
 }
