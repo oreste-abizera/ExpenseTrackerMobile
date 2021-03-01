@@ -42,8 +42,10 @@ export function ContextProvider({ children }) {
   const [transactions, settransactions] = React.useState([]);
   const [categories, setcategories] = React.useState([]);
   const [user, setuser] = React.useState(defaultUser);
+  const [previous, setprevious] = React.useState("");
 
   const changeNavigation = (newValue) => {
+    setprevious(newValue === "Home" ? "" : navigation);
     setNavigation(newValue);
   };
 
@@ -78,7 +80,14 @@ export function ContextProvider({ children }) {
 
   return (
     <Context.Provider
-      value={{ user, categories, navigation, changeNavigation, getTotals }}
+      value={{
+        user,
+        categories,
+        previous,
+        navigation,
+        changeNavigation,
+        getTotals,
+      }}
     >
       {children}
     </Context.Provider>

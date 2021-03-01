@@ -1,15 +1,22 @@
 import React from "react";
 import { Header, Icon } from "react-native-elements";
+import Context from "../Context/ContextProvider";
 
 const LeftComponent = () => {
-  let previous = "";
+  const { previous, changeNavigation } = React.useContext(Context);
   return (
     <Icon
-      name={previous ? "bars" : "arrow-left"}
+      name={previous ? "arrow-left" : "bars"}
       type="font-awesome"
       color="#fff"
       size={19}
-      onPress={() => alert("Pressed back icon")}
+      onPress={() => {
+        if (previous) {
+          changeNavigation(previous);
+        } else {
+          alert("Press on menu icon detected.");
+        }
+      }}
     ></Icon>
   );
 };
