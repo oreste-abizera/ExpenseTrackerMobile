@@ -13,13 +13,13 @@ export default function AddTransactionTrigger() {
           style={styles.btn}
           onPress={() => changeNavigation("Add")}
         >
-          <Text>Add Income</Text>
+          <Text style={{ color: "#ffffff" }}>Add Income</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => changeNavigation("Add")}
           style={styles.btn}
         >
-          <Text>Add Expense</Text>
+          <Text style={{ color: "#ffffff" }}>Add Expense</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -37,13 +37,13 @@ const styles = EStyleSheet.create({
     marginVertical: "1rem",
   },
   buttons: {
-    width: "70%",
+    width: "90%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
   },
   btn: {
-    width: "40%",
+    width: "45%",
     backgroundColor: "rgb(32, 137, 220)",
     padding: "0.5rem",
     display: "flex",

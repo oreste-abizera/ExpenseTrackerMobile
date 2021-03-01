@@ -29,13 +29,10 @@ const styles = EStyleSheet.create({
   },
   balance__item: {
     width: "30%",
-    display: "flex",
-    flexDirection: "row",
     flexWrap: "wrap",
   },
   balance__item__heading: {
     fontSize: "1.2rem",
-    marginBottom: "1rem",
   },
 });
 
@@ -74,6 +71,10 @@ export default function ThisMonthInfo() {
     },
   ];
 
+  if (expenses === 0 && income === 0) {
+    console.log("No transactions found");
+  }
+
   return (
     <View style={styles.currentMonth}>
       <View
@@ -91,17 +92,23 @@ export default function ThisMonthInfo() {
         ></Icon>
         <Text>This Month</Text>
       </View>
-      <PieChart
-        data={data}
-        width={screenWidth}
-        height={200}
-        chartConfig={chartConfig}
-        accessor={"amount"}
-        backgroundColor={"transparent"}
-        // paddingLeft={'15'}
-        // center={[10, 50]}
-        // absolute
-      />
+      {expenses === 0 && income === 0 ? (
+        <View>
+          <Text style={{ fontWeight: "bold" }}>No transactions found</Text>
+        </View>
+      ) : (
+        <PieChart
+          data={data}
+          width={screenWidth}
+          height={200}
+          chartConfig={chartConfig}
+          accessor={"amount"}
+          backgroundColor={"transparent"}
+          // paddingLeft={'15'}
+          // center={[10, 50]}
+          // absolute
+        />
+      )}
 
       <View style={styles.balance}>
         <View style={[styles.balance__item, { color: incomeColor }]}>
