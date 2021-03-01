@@ -12,7 +12,7 @@ export default function Loader() {
         alignItems: "center",
       }}
     >
-      <Image source={require("../assets/loader2.gif")}></Image>
+      <Image source={require("../assets/loader1.gif")}></Image>
     </View>
   );
 }

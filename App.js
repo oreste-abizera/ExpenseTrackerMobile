@@ -23,7 +23,7 @@ export default function App() {
     setloading(true);
     setTimeout(() => {
       setloading(false);
-    }, 2500);
+    }, 2000);
   }, []);
   return (
     <ContextProvider>
