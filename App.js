@@ -7,26 +7,43 @@ import HeaderComponent from "./Components/HeaderComponent";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { ContextProvider } from "./Context/ContextProvider";
 import Routes from "./Screens/Routes";
+import Loader from "./Components/Loader";
 
 EStyleSheet.build({
   $textColor: "#0275d8",
 });
 
 export default function App() {
-  console.log("Expense Tracker App started......");
+  const [loading, setloading] = React.useState(true);
+  if (!loading) {
+    console.log(`Expense Tracker App started......`);
+  }
+
+  React.useEffect(() => {
+    setloading(true);
+    setTimeout(() => {
+      setloading(false);
+    }, 2500);
+  }, []);
   return (
     <ContextProvider>
       <SafeAreaProvider>
         <View style={styles.container}>
-          <HeaderComponent></HeaderComponent>
-          <ScrollView>
-            <Routes></Routes>
-            {/* <NotificationsScreen></NotificationsScreen> */}
-            <StatusBar style="auto" />
-          </ScrollView>
-          <View>
-            <FooterComponent></FooterComponent>
-          </View>
+          {loading ? (
+            <Loader></Loader>
+          ) : (
+            <>
+              <HeaderComponent></HeaderComponent>
+              <ScrollView>
+                <Routes></Routes>
+                {/* <NotificationsScreen></NotificationsScreen> */}
+                <StatusBar style="auto" />
+              </ScrollView>
+              <View>
+                <FooterComponent></FooterComponent>
+              </View>
+            </>
+          )}
         </View>
       </SafeAreaProvider>
     </ContextProvider>
