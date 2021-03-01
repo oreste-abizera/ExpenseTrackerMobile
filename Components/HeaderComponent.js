@@ -21,13 +21,26 @@ const LeftComponent = () => {
   );
 };
 
+const RightComponent = () => {
+  const { changeNavigation } = React.useContext(Context);
+  return (
+    <Icon
+      name="home"
+      type="font-awesome"
+      color="#fff"
+      size={22}
+      onPress={() => changeNavigation("Home")}
+    ></Icon>
+  );
+};
+
 export default function HeaderComponent() {
   return (
     <Header
-      placement="left"
+      placement="center"
       leftComponent={<LeftComponent></LeftComponent>}
       centerComponent={{ text: "Expense Tracker", style: { color: "#fff" } }}
-      //   rightComponent={{ icon: "home", color: "#fff" }}
+      rightComponent={<RightComponent></RightComponent>}
       on
     />
   );
