@@ -18,8 +18,8 @@ export default function App() {
     <ContextProvider>
       <SafeAreaProvider>
         <View style={styles.container}>
+          <HeaderComponent></HeaderComponent>
           <ScrollView>
-            <HeaderComponent></HeaderComponent>
             <Routes></Routes>
             {/* <NotificationsScreen></NotificationsScreen> */}
             <StatusBar style="auto" />
