@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @react-native-community
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @react-native-community/picker
 
 PATH: 
   C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;C:\Users\DELL\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\DELL\AppData\Local\Programs\Python\Python39\;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;C:\Users\DELL\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\DELL\AppData\Roaming\npm;C:\Users\DELL\AppData\Local\Yarn\bin;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.3.2\bin;C:\platform-tools
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@react-native-community: Request "https://registry.yarnpkg.com/@react-native-community" returned a 405
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66106:18)
-      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140749:22)
-      at Request.emit (events.js:315:20)
-      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141721:10)
-      at Request.emit (events.js:315:20)
-      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141643:12)
-      at Object.onceWrapper (events.js:421:28)
-      at IncomingMessage.emit (events.js:327:22)
-      at endReadableNT (_stream_readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: EPERM: operation not permitted, unlink 'C:\Users\DELL\Desktop\Projects\Expense Tracker\ExpenseTrackerMobile\node_modules\react-native-animated-loader\src'
 
 npm manifest: 
   {
@@ -37,6 +27,7 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@react-native-community/async-storage": "^1.12.1",
       "axios": "^0.21.1",
       "expo": "~40.0.0",
       "expo-font": "~8.4.0",
@@ -1616,6 +1607,13 @@ Lockfile:
     dependencies:
       "@babel/runtime" "^7.7.2"
       regenerator-runtime "^0.13.3"
+  
+  "@react-native-community/async-storage@^1.12.1":
+    version "1.12.1"
+    resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
+    integrity sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg==
+    dependencies:
+      deep-assign "^3.0.0"
   
   "@react-native-community/cli-debugger-ui@^4.13.1":
     version "4.13.1"
