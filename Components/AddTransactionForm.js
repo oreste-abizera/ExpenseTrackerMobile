@@ -11,20 +11,87 @@ import {
 // import Picker from "@react-native-community/picker";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
+import RadioButton from "./RadioButton";
 
 const AddTransactionForm = () => {
   const { categories = [] } = React.useContext(Context);
+  const [amount, setamount] = React.useState();
+  const [mode, setmode] = React.useState();
+  const [category, setcategory] = React.useState();
+  const [note, setnote] = React.useState("");
+  const [type, settype] = React.useState("Expense");
+  const [values, setvalues] = React.useState({
+    amount: 0,
+    mode: "",
+    category: "",
+    note: "",
+    type: "",
+  });
+
+  const changeType = (newValue) => {
+    settype(newValue);
+  };
+  const handleamount = (newValue) => {
+    setamount(newValue);
+  };
+
+  const handlemode = (newValue) => {
+    setmode(newValue);
+  };
+
+  const handlecategory = (newValue) => {
+    setcategory(newValue);
+  };
+
+  const handlenote = (newValue) => {
+    setnote(newValue);
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.formLabel}>Add Transaction</Text>
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text onPress={() => changeType("Expense")}>
+            <RadioButton selected={type === "Expense"}></RadioButton>
+          </Text>
+          <Text style={{ marginLeft: 5 }} onPress={() => changeType("Expense")}>
+            Expense
+          </Text>
+        </View>
+        <View
+          style={{
+            marginLeft: 30,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text onPress={() => changeType("Income")}>
+            <RadioButton selected={type === "Income"}></RadioButton>
+          </Text>
+          <Text style={{ marginLeft: 5 }} onPress={() => changeType("Income")}>
+            Income
+          </Text>
+        </View>
+      </View>
+
       <View style={styles.formGroup}>
         <Text style={styles.inputLabel}>Amount</Text>
         <TextInput
           placeholder="e.g: 5000"
           style={styles.formControl}
+          value={amount}
+          onChangeText={(text) => handleamount(text)}
         ></TextInput>
       </View>
-
       <View style={styles.formGroup}>
         <Text style={styles.inputLabel}>Mode</Text>
         {/* <Picker
@@ -42,14 +109,18 @@ const AddTransactionForm = () => {
             { display: "flex", justifyContent: "center" },
           ]}
         >
-          <Picker selectedValue="Cash">
+          <Picker
+            selectedValue={mode}
+            onValueChange={(value, index) => {
+              handlemode(value);
+            }}
+          >
             <Picker.Item label="Select mode" value="" />
             <Picker.Item label="Cash" value="Cash" />
             <Picker.Item label="Bank" value="Bank" />
           </Picker>
         </View>
       </View>
-
       <View style={styles.formGroup}>
         <Text style={styles.inputLabel}>Category</Text>
         <View
@@ -58,19 +129,23 @@ const AddTransactionForm = () => {
             { display: "flex", justifyContent: "center" },
           ]}
         >
-          <Picker selectedValue="Cash">
+          <Picker
+            selectedValue={category}
+            onValueChange={(value, index) => {
+              handlecategory(value);
+            }}
+          >
             <Picker.Item label="Select Category" value="" />
-            {categories.map((category) => (
+            {categories.map((cat) => (
               <Picker.Item
-                label={category.title}
-                value={category._id}
-                key={category._id}
+                label={cat.title}
+                value={cat._id}
+                key={cat._id}
               ></Picker.Item>
             ))}
           </Picker>
         </View>
       </View>
-
       <View style={styles.formGroup}>
         <Text style={styles.inputLabel}>Note</Text>
         <TextInput
@@ -78,9 +153,10 @@ const AddTransactionForm = () => {
           numberOfLines={4}
           placeholder="Note"
           style={styles.formControl}
+          value={note}
+          onChangeText={(text) => handlenote(text)}
         ></TextInput>
       </View>
-
       <TouchableOpacity style={styles.submit}>
         <Text>Save</Text>
       </TouchableOpacity>
