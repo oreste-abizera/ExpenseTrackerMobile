@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   Text,
@@ -11,22 +12,16 @@ import {
 // import Picker from "@react-native-community/picker";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
+import url from "../utils/url";
 import RadioButton from "./RadioButton";
 
 const AddTransactionForm = () => {
-  const { categories = [] } = React.useContext(Context);
+  const { categories = [], user, changeNavigation } = React.useContext(Context);
   const [amount, setamount] = React.useState();
   const [mode, setmode] = React.useState();
   const [category, setcategory] = React.useState();
   const [note, setnote] = React.useState("");
-  const [type, settype] = React.useState("Expense");
-  const [values, setvalues] = React.useState({
-    amount: 0,
-    mode: "",
-    category: "",
-    note: "",
-    type: "",
-  });
+  const [type, settype] = React.useState("expense");
 
   const changeType = (newValue) => {
     settype(newValue);
@@ -46,6 +41,29 @@ const AddTransactionForm = () => {
   const handlenote = (newValue) => {
     setnote(newValue);
   };
+
+  const handleSubmit = async () => {
+    const dataToSend = {
+      amount,
+      type,
+      category,
+      mode,
+      note,
+    };
+    let response;
+    await axios
+      .post(`${url}/api/transactions`, dataToSend, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((res) => (response = res.data))
+      .catch((err) => (response = err.response.data));
+
+    console.log("\nresponse:");
+    console.log(response);
+    if (response.success) {
+      changeNavigation("Home");
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.formLabel}>Add Transaction</Text>
@@ -58,10 +76,10 @@ const AddTransactionForm = () => {
             justifyContent: "center",
           }}
         >
-          <Text onPress={() => changeType("Expense")}>
-            <RadioButton selected={type === "Expense"}></RadioButton>
+          <Text onPress={() => changeType("expense")}>
+            <RadioButton selected={type === "expense"}></RadioButton>
           </Text>
-          <Text style={{ marginLeft: 5 }} onPress={() => changeType("Expense")}>
+          <Text style={{ marginLeft: 5 }} onPress={() => changeType("expense")}>
             Expense
           </Text>
         </View>
@@ -74,10 +92,10 @@ const AddTransactionForm = () => {
             justifyContent: "center",
           }}
         >
-          <Text onPress={() => changeType("Income")}>
-            <RadioButton selected={type === "Income"}></RadioButton>
+          <Text onPress={() => changeType("income")}>
+            <RadioButton selected={type === "income"}></RadioButton>
           </Text>
-          <Text style={{ marginLeft: 5 }} onPress={() => changeType("Income")}>
+          <Text style={{ marginLeft: 5 }} onPress={() => changeType("income")}>
             Income
           </Text>
         </View>
@@ -157,8 +175,8 @@ const AddTransactionForm = () => {
           onChangeText={(text) => handlenote(text)}
         ></TextInput>
       </View>
-      <TouchableOpacity style={styles.submit}>
-        <Text>Save</Text>
+      <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+        <Text style={{ color: "#fff" }}>Save</Text>
       </TouchableOpacity>
     </View>
   );
@@ -195,9 +213,9 @@ const styles = EStyleSheet.create({
     marginVertical: "0.5rem",
   },
   submit: {
-    marginTop: "2rem",
-    marginLeft: "20%",
-    width: "45%",
+    marginVertical: "1rem",
+    marginLeft: "30%",
+    width: "30%",
     backgroundColor: "rgb(32, 137, 220)",
     padding: "0.5rem",
     display: "flex",
