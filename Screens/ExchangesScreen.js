@@ -1,33 +1,73 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import CalendarStrip from "react-native-calendar-strip";
 import ViewTransactions from "../Components/ViewTransactions";
+import Context from "../Context/ContextProvider";
 
 export default function ExchangesScreen() {
+  const { transactions } = React.useContext(Context);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleSelectedDate = (date) => {
     setSelectedDate(date);
   };
-  const selectedDates = [
-    // {
-    //   date: selectedDate,
-    //   lines: [
-    //     {
-    //       color: "green",
-    //       // selectedColor: "green",
-    //     },
-    //   ],
-    // },
-  ];
+
+  const markedDates = [];
+
+  const getDay = (date) => {
+    date = new Date(date);
+    let year = date.getFullYear();
+    let month = parseInt(date.getMonth()) + 1 < 10 ? "0" : "";
+    let day = date.getDate() < 10 ? "0" : "";
+    day += date.getDate();
+    month += parseInt(date.getMonth()) + 1;
+    return year + "-" + month + "-" + day;
+  };
+
+  //extract dates with transactions
+  let datesWithTransactions = new Set();
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i];
+    datesWithTransactions.add({
+      date: getDay(transaction.date),
+      type: transaction.type,
+    });
+  }
+
+  datesWithTransactions = [...datesWithTransactions];
+  for (const dateWithTransaction of datesWithTransactions) {
+    const markedDate = {
+      date: new Date(dateWithTransaction.date),
+      dots: [],
+    };
+    let dotColor =
+      dateWithTransaction.type === "income" ? "rgb(32, 137, 220)" : "red";
+    markedDate.dots.push({ color: dotColor });
+
+    //check same day existence
+    let found;
+    for (let i = 0; i < markedDates.length; i++) {
+      const dateWithTr = markedDates[i];
+      if (markedDate.date.toISOString() === dateWithTr.date.toISOString()) {
+        found = i;
+        break;
+      }
+    }
+    if (found !== undefined && found !== null) {
+      markedDates[found].dots.push(markedDate.dots[0]);
+    } else {
+      markedDates.push(markedDate);
+    }
+  }
 
   return (
     <View style={{ height: "100%" }}>
       <CalendarStrip
+        markedDates={markedDates}
         selectedDate={selectedDate}
-        markedDates={selectedDates}
         onDateSelected={handleSelectedDate}
         style={{ marginTop: 10, height: 130 }}
+        dateNumberStyle={{ marginTop: 5 }}
         highlightDateContainerStyle={{
           backgroundColor: "rgb(32, 137, 220)",
         }}
