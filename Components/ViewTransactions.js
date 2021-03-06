@@ -4,67 +4,86 @@ import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 
-export default function ViewTransactions() {
-  const { incomes, expenses, getTotals, transactions } = React.useContext(
-    Context
-  );
+export default function ViewTransactions({ selectedDate }) {
+  const { getTotals, transactions } = React.useContext(Context);
 
-  const totals = getTotals();
+  function sameDay(d1, d2) {
+    d1 = new Date(d1);
+    d2 = new Date(d2);
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  }
+
+  let displayTransactions = [];
+  if (selectedDate) {
+    displayTransactions = transactions.filter((transaction) =>
+      sameDay(transaction.date, selectedDate)
+    );
+  }
+
+  let incomes = displayTransactions.filter(
+    (transaction) => transaction.type === "income"
+  );
+  let expenses = displayTransactions.filter(
+    (transaction) => transaction.type === "expense"
+  );
+  const totals = getTotals(incomes, expenses);
   return (
     <View style={styles.container}>
-      {incomes.length === 0 && expenses.length === 0 ? (
-        <Text style={styles.empty}>No Transactions during selected day</Text>
-      ) : (
-        <View style={styles.totals}>
-          <View
-            style={[
-              styles.totalsItem,
-              { backgroundColor: "rgba(131, 167, 234, 1)" },
-            ]}
-          >
-            <Text>Income</Text>
-            <Text>{totals.income}Rwf</Text>
-          </View>
-          <View style={[styles.totalsItem, { backgroundColor: "#e81f3d" }]}>
-            <Text>Expenses</Text>
-            <Text>{0 - totals.expenses}Rwf</Text>
-          </View>
-
-          <View style={styles.transactions}>
-            <Text style={{ marginVertical: 10, fontWeight: "600" }}>
-              List of Transactions
-            </Text>
-            {transactions.map((transaction) => (
-              <View key={transaction._id} style={styles.transaction}>
-                <View style={styles.iconContainer}>
-                  <Icon
-                    name={transaction.category.icon}
-                    color={transaction.category.color}
-                    type="font-awesome"
-                  ></Icon>
-                </View>
-                <Text
-                  numberOfLines={1}
-                  style={{ width: 250 }}
-                  ellipsizeMode="tail"
-                >
-                  {transaction.note || transaction.category.title}
-                </Text>
-                <Text
-                  style={{
-                    color: transaction.type === "expense" ? "red" : "green",
-                  }}
-                >
-                  {transaction.type === "expense"
-                    ? 0 - transaction.amount
-                    : transaction.amount}
-                  Rwf
-                </Text>
-              </View>
-            ))}
-          </View>
+      <View style={styles.totals}>
+        <View
+          style={[
+            styles.totalsItem,
+            { backgroundColor: "rgba(131, 167, 234, 1)" },
+          ]}
+        >
+          <Text>Income</Text>
+          <Text>{totals.income}Rwf</Text>
         </View>
-      )}
+        <View style={[styles.totalsItem, { backgroundColor: "#e81f3d" }]}>
+          <Text>Expenses</Text>
+          <Text>{0 - totals.expenses}Rwf</Text>
+        </View>
+
+        <View style={styles.transactions}>
+          <Text style={{ marginVertical: 10, fontWeight: "600" }}>
+            {displayTransactions.length === 0
+              ? "No transactions done in the selected day"
+              : "List of Transactions"}
+          </Text>
+          {displayTransactions.map((transaction) => (
+            <View key={transaction._id} style={styles.transaction}>
+              <View style={styles.iconContainer}>
+                <Icon
+                  name={transaction.category?.icon}
+                  color={transaction.category?.color}
+                  type="font-awesome"
+                ></Icon>
+              </View>
+              <Text
+                numberOfLines={1}
+                style={{ width: 250 }}
+                ellipsizeMode="tail"
+              >
+                {transaction.note || transaction.category?.title}
+              </Text>
+              <Text
+                style={{
+                  color: transaction.type === "expense" ? "red" : "green",
+                }}
+              >
+                {transaction.type === "expense"
+                  ? 0 - transaction.amount
+                  : transaction.amount}
+                Rwf
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
     </View>
   );
 }

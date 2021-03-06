@@ -33,7 +33,7 @@ export default function ExchangesScreen() {
         }}
       ></CalendarStrip>
 
-      <ViewTransactions></ViewTransactions>
+      <ViewTransactions selectedDate={selectedDate}></ViewTransactions>
     </View>
   );
 }
