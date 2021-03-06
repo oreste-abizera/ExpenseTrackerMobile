@@ -4,19 +4,25 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 
 export default function AddTransactionTrigger() {
-  const { changeNavigation } = React.useContext(Context);
+  const { changeNavigation, changeAdd } = React.useContext(Context);
   return (
     <View style={styles.addTrigger}>
       <Text style={styles.addTriggerHeading}>Add Transaction</Text>
       <View style={styles.buttons}>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => changeNavigation("Add")}
+          onPress={() => {
+            changeAdd("income");
+            changeNavigation("Add");
+          }}
         >
           <Text style={{ color: "#ffffff" }}>Add Income</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => changeNavigation("Add")}
+          onPress={() => {
+            changeAdd("expense");
+            changeNavigation("Add");
+          }}
           style={styles.btn}
         >
           <Text style={{ color: "#ffffff" }}>Add Expense</Text>

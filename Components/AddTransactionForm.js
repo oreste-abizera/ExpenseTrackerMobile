@@ -16,14 +16,18 @@ import RadioButton from "./RadioButton";
 import Toast from "react-native-simple-toast";
 
 const AddTransactionForm = () => {
-  const { categories = [], user, changeNavigation, reload } = React.useContext(
-    Context
-  );
+  const {
+    categories = [],
+    user,
+    changeNavigation,
+    reload,
+    add,
+  } = React.useContext(Context);
   const [amount, setamount] = React.useState();
   const [mode, setmode] = React.useState();
   const [category, setcategory] = React.useState();
   const [note, setnote] = React.useState("");
-  const [type, settype] = React.useState("expense");
+  const [type, settype] = React.useState(add);
   const [errors, seterrors] = React.useState({
     amount: null,
     category: null,
