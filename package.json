@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-picker/picker": "^1.9.11",
     "axios": "^0.21.1",
     "expo": "~40.0.0",
     "expo-font": "~8.4.0",

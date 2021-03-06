@@ -3,13 +3,12 @@ import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
-  Picker,
   View,
   TextInput,
   Button,
   TouchableOpacity,
 } from "react-native";
-// import Picker from "@react-native-community/picker";
+import { Picker } from "@react-native-picker/picker";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
@@ -22,6 +21,13 @@ const AddTransactionForm = () => {
   const [category, setcategory] = React.useState();
   const [note, setnote] = React.useState("");
   const [type, settype] = React.useState("expense");
+  const [errors, seterrors] = React.useState({
+    amount: null,
+    category: null,
+    note: null,
+    type: null,
+    mode: null,
+  });
 
   const changeType = (newValue) => {
     settype(newValue);
@@ -64,6 +70,9 @@ const AddTransactionForm = () => {
       changeNavigation("Home");
     }
   };
+  const errorControl = [styles.formControl, styles.formControlError];
+  const errorLabel = [styles.inputLabel, styles.errorInputLabel];
+
   return (
     <View style={styles.container}>
       <Text style={styles.formLabel}>Add Transaction</Text>
@@ -102,25 +111,23 @@ const AddTransactionForm = () => {
       </View>
 
       <View style={styles.formGroup}>
-        <Text style={styles.inputLabel}>Amount</Text>
+        <Text style={errors.amount ? errorLabel : styles.inputLabel}>
+          Amount
+        </Text>
         <TextInput
           placeholder="e.g: 5000"
-          style={styles.formControl}
+          style={errors.amount ? errorControl : styles.formControl}
           value={amount}
           onChangeText={(text) => handleamount(text)}
         ></TextInput>
+        {errors.amount && (
+          <Text style={[errorLabel, { fontSize: 18, marginTop: 3 }]}>
+            {errors.amount}
+          </Text>
+        )}
       </View>
       <View style={styles.formGroup}>
         <Text style={styles.inputLabel}>Mode</Text>
-        {/* <Picker
-          selectedValue={""}
-          style={styles.formControl}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-        >
-          <Picker.Item label="Select mode" value="" />
-          <Picker.Item label="Cash" value="Cash" />
-          <Picker.Item label="Bank" value="Bank" />
-        </Picker> */}
         <View
           style={[
             styles.formControl,
@@ -170,7 +177,7 @@ const AddTransactionForm = () => {
           multiline={true}
           numberOfLines={4}
           placeholder="Note"
-          style={styles.formControl}
+          style={errors.note ? errorControl : styles.formControl}
           value={note}
           onChangeText={(text) => handlenote(text)}
         ></TextInput>
@@ -197,6 +204,9 @@ const styles = EStyleSheet.create({
   inputLabel: {
     fontSize: 20,
   },
+  errorInputLabel: {
+    color: "red",
+  },
   formControl: {
     borderColor: "white",
     marginTop: 10,
@@ -208,6 +218,12 @@ const styles = EStyleSheet.create({
     // borderColor: "black",
     // borderStyle: "solid",
     // borderWidth: 1,
+  },
+  formControlError: {
+    borderColor: "#c89494",
+    borderStyle: "solid",
+    borderWidth: 1,
+    backgroundColor: "#F9D3D3",
   },
   formGroup: {
     marginVertical: "0.5rem",

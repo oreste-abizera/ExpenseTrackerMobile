@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
+import SingleCategory from "./SingleCategory";
 
 export default function CategoriesComponent() {
   const colors = ["#e5fcde", "#bbe4d7", "#c0efc5", "f9dede", "#ba7930"];
@@ -13,22 +14,11 @@ export default function CategoriesComponent() {
         Categories: {categories.length}
       </Text>
       {categories.slice(0, 4).map((category) => (
-        <View style={styles.category} key={category._id}>
-          <View style={styles.iconContainer}>
-            <Icon
-              name={category.icon}
-              color={category.color}
-              type="font-awesome"
-            ></Icon>
-          </View>
-
-          <View>
-            <Text>{category.title}</Text>
-            <Text>10 transactions</Text>
-          </View>
-
-          <Text>-5000Rwf</Text>
-        </View>
+        <SingleCategory
+          key={category._id}
+          category={category}
+          styles={styles}
+        ></SingleCategory>
       ))}
     </View>
   );

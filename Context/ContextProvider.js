@@ -66,14 +66,14 @@ export function ContextProvider({ children }) {
     }
   }
 
-  function getTotals() {
+  function getTotals(incomesP = incomes, expensesP = expenses) {
     let expensesAmount = 0,
       incomeAmount = 0;
-    for (let i = 0; i < expenses.length; i++) {
-      expensesAmount += expenses[i].amount;
+    for (let i = 0; i < expensesP.length; i++) {
+      expensesAmount += expensesP[i].amount;
     }
-    for (let i = 0; i < incomes.length; i++) {
-      incomeAmount += incomes[i].amount;
+    for (let i = 0; i < incomesP.length; i++) {
+      incomeAmount += incomesP[i].amount;
     }
     return { income: incomeAmount, expenses: expensesAmount };
   }
@@ -87,6 +87,8 @@ export function ContextProvider({ children }) {
         navigation,
         changeNavigation,
         getTotals,
+        incomes,
+        expenses,
       }}
     >
       {children}
