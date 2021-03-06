@@ -8,6 +8,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import { ContextProvider } from "./Context/ContextProvider";
 import Routes from "./Screens/Routes";
 import Loader from "./Components/Loader";
+import SideDrawer from "./Components/SideDrawer";
 
 EStyleSheet.build({
   $textColor: "#0275d8",
@@ -33,6 +34,7 @@ export default function App() {
             <Loader></Loader>
           ) : (
             <>
+              <SideDrawer></SideDrawer>
               <HeaderComponent></HeaderComponent>
               <ScrollView>
                 <Routes></Routes>

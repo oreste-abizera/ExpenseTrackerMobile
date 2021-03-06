@@ -16,7 +16,6 @@ const LeftComponent = () => {
         if (previous) {
           changeNavigation(previous);
         } else {
-          alert("Press on menu icon detected.");
           toggleDrawer();
         }
       }}
