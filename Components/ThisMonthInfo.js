@@ -49,8 +49,28 @@ const chartConfig = {
 };
 
 export default function ThisMonthInfo() {
-  const { getTotals } = React.useContext(Context);
-  const { expenses, income } = getTotals();
+  const {
+    getTotals,
+    expenses: contextExpenses,
+    incomes: contextIncomes,
+  } = React.useContext(Context);
+  function sameMonth(d1, d2) {
+    d1 = new Date(d1);
+    d2 = new Date(d2);
+    return (
+      d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth()
+    );
+  }
+
+  const monthExpenses = contextExpenses.filter((exp) =>
+    sameMonth(exp.date, new Date())
+  );
+
+  const monthIncome = contextIncomes.filter((incom) =>
+    sameMonth(incom.date, new Date())
+  );
+
+  const { expenses, income } = getTotals(monthIncome, monthExpenses);
   const expensesColor = "#e81f3d",
     incomeColor = "rgba(131, 167, 234, 1)",
     balanceColor = "#8c32a8";
