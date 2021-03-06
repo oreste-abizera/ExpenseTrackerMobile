@@ -45,6 +45,11 @@ export function ContextProvider({ children }) {
   const [previous, setprevious] = React.useState("");
   const [load, setload] = React.useState(false);
   const [add, setadd] = React.useState("expense");
+  const [drawerOpen, setdrawerOpen] = React.useState(true);
+
+  const toggleDrawer = () => {
+    setdrawerOpen(!drawerOpen);
+  };
 
   const changeAdd = (newValue) => {
     setadd(newValue);
@@ -61,6 +66,7 @@ export function ContextProvider({ children }) {
   async function loadData() {
     setuser(await loadUserFromLocalStorage());
     if (user.token) {
+      console.log("Already logged in.");
       settransactions(await loadTransactions(user.token));
       setincomes(await loadIncomes(user.token));
       setexpenses(await loadExpenses(user.token));
@@ -102,6 +108,8 @@ export function ContextProvider({ children }) {
         reload,
         changeAdd,
         add,
+        drawerOpen,
+        toggleDrawer,
       }}
     >
       {children}

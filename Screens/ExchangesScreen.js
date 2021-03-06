@@ -40,8 +40,7 @@ export default function ExchangesScreen() {
       date: new Date(dateWithTransaction.date),
       dots: [],
     };
-    let dotColor =
-      dateWithTransaction.type === "income" ? "rgb(32, 137, 220)" : "red";
+    let dotColor = dateWithTransaction.type === "income" ? "green" : "red";
     markedDate.dots.push({ color: dotColor });
 
     //check same day existence
@@ -54,7 +53,14 @@ export default function ExchangesScreen() {
       }
     }
     if (found !== undefined && found !== null) {
-      markedDates[found].dots.push(markedDate.dots[0]);
+      let currentDots = markedDates[found].dots;
+      let dotExist = false;
+      for (const j of currentDots) {
+        if (j.color === markedDate.dots[0].color) {
+          dotExist = true;
+        }
+      }
+      if (!dotExist) markedDates[found].dots.push(markedDate.dots[0]);
     } else {
       markedDates.push(markedDate);
     }

@@ -3,7 +3,9 @@ import { Header, Icon } from "react-native-elements";
 import Context from "../Context/ContextProvider";
 
 const LeftComponent = () => {
-  const { previous, changeNavigation } = React.useContext(Context);
+  const { previous, changeNavigation, toggleDrawer } = React.useContext(
+    Context
+  );
   return (
     <Icon
       name={previous ? "arrow-left" : "bars"}
@@ -15,6 +17,7 @@ const LeftComponent = () => {
           changeNavigation(previous);
         } else {
           alert("Press on menu icon detected.");
+          toggleDrawer();
         }
       }}
     ></Icon>
