@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
@@ -8,18 +8,33 @@ import SingleCategory from "./SingleCategory";
 export default function CategoriesComponent() {
   const colors = ["#e5fcde", "#bbe4d7", "#c0efc5", "f9dede", "#ba7930"];
   const { categories = [] } = React.useContext(Context);
+  const [showAll, setshowAll] = React.useState(false);
+
+  const handleShowAll = () => {
+    setshowAll(!showAll);
+  };
+  let showCategories = showAll ? categories : categories.slice(0, 4);
   return (
     <View style={styles.categories}>
       <Text style={styles.categoriesHeading}>
         Categories: {categories.length}
       </Text>
-      {categories.slice(0, 4).map((category) => (
+      {showCategories.map((category) => (
         <SingleCategory
           key={category._id}
           category={category}
           styles={styles}
         ></SingleCategory>
       ))}
+
+      {categories.length > 4 && (
+        <TouchableOpacity
+          style={{ marginLeft: 200, marginVertical: 10 }}
+          onPress={handleShowAll}
+        >
+          <Text>{showAll ? "Show less" : "Show All"}</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
