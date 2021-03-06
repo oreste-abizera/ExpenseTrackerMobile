@@ -16,7 +16,9 @@ import RadioButton from "./RadioButton";
 import Toast from "react-native-simple-toast";
 
 const AddTransactionForm = () => {
-  const { categories = [], user, changeNavigation } = React.useContext(Context);
+  const { categories = [], user, changeNavigation, reload } = React.useContext(
+    Context
+  );
   const [amount, setamount] = React.useState();
   const [mode, setmode] = React.useState();
   const [category, setcategory] = React.useState();
@@ -66,6 +68,7 @@ const AddTransactionForm = () => {
       .catch((err) => (response = err.response.data));
 
     if (response.success) {
+      reload();
       changeNavigation("Home");
     } else {
       Toast.show("Check all inputs", Toast.LONG);

@@ -43,6 +43,7 @@ export function ContextProvider({ children }) {
   const [categories, setcategories] = React.useState([]);
   const [user, setuser] = React.useState(defaultUser);
   const [previous, setprevious] = React.useState("");
+  const [load, setload] = React.useState(false);
 
   const changeNavigation = (newValue) => {
     setprevious(newValue === "Home" ? "" : navigation);
@@ -51,7 +52,7 @@ export function ContextProvider({ children }) {
 
   React.useEffect(() => {
     loadData();
-  }, [user.token]);
+  }, [user.token, load]);
 
   async function loadData() {
     setuser(await loadUserFromLocalStorage());
@@ -78,6 +79,10 @@ export function ContextProvider({ children }) {
     return { income: incomeAmount, expenses: expensesAmount };
   }
 
+  const reload = () => {
+    setload(!load);
+  };
+
   return (
     <Context.Provider
       value={{
@@ -90,6 +95,7 @@ export function ContextProvider({ children }) {
         incomes,
         expenses,
         transactions,
+        reload,
       }}
     >
       {children}
