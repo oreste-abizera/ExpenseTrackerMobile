@@ -89,6 +89,7 @@ export function ContextProvider({ children }) {
         getTotals,
         incomes,
         expenses,
+        transactions,
       }}
     >
       {children}
