@@ -4,9 +4,7 @@ import { Icon } from "react-native-elements";
 import Context from "../Context/ContextProvider";
 
 export default function SingleCategory({ category, styles }) {
-  const { incomes, expenses, transactions, getTotals } = React.useContext(
-    Context
-  );
+  const { incomes, expenses, getTotals } = React.useContext(Context);
   const categoryIncomes = incomes.filter(
     (income) => income.category === category._id
   );

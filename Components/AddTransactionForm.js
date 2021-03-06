@@ -13,6 +13,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 import RadioButton from "./RadioButton";
+import Toast from "react-native-simple-toast";
 
 const AddTransactionForm = () => {
   const { categories = [], user, changeNavigation } = React.useContext(Context);
@@ -64,10 +65,10 @@ const AddTransactionForm = () => {
       .then((res) => (response = res.data))
       .catch((err) => (response = err.response.data));
 
-    console.log("\nresponse:");
-    console.log(response);
     if (response.success) {
       changeNavigation("Home");
+    } else {
+      Toast.show("Check all inputs", Toast.LONG);
     }
   };
   const errorControl = [styles.formControl, styles.formControlError];
