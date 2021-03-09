@@ -81,7 +81,7 @@ export function ContextProvider({ children }) {
   async function loadData() {
     setuser(await loadUserFromLocalStorage());
     if (user.token) {
-      console.log("Already logged in.");
+      console.log("logged in.");
       settransactions(await loadTransactions(user.token));
       setincomes(await loadIncomes(user.token));
       setexpenses(await loadExpenses(user.token));

@@ -9,7 +9,10 @@ import NotFoundScreen from "./NotFoundScreen";
 import NotificationsScreen from "./NotificationsScreen";
 
 export default function Routes() {
-  const { navigation } = useContext(Context);
+  const { navigation, user, changeNavigation } = useContext(Context);
+  if (!user.token && navigation !== "Login") {
+    changeNavigation("Login");
+  }
 
   return (
     <View>
