@@ -36,7 +36,7 @@ const loadUserFromAsyncStorage = async () => {
 };
 
 export function ContextProvider({ children }) {
-  const [navigation, setNavigation] = React.useState("Home");
+  const [navigation, setNavigation] = React.useState("Login");
   const [incomes, setincomes] = React.useState([]);
   const [expenses, setexpenses] = React.useState([]);
   const [transactions, settransactions] = React.useState([]);
@@ -55,7 +55,7 @@ export function ContextProvider({ children }) {
     setadd(newValue);
   };
   const changeNavigation = (newValue) => {
-    setprevious(newValue === "Home" ? "" : navigation);
+    setprevious(newValue === "Home" || "Login" || "Register" ? "" : navigation);
     setNavigation(newValue);
   };
 

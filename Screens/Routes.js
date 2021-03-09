@@ -4,15 +4,18 @@ import Context from "../Context/ContextProvider";
 import AddTransactionScreen from "./AddTransactionScreen";
 import ExchangesScreen from "./ExchangesScreen";
 import LoginScreen from "./LoginScreen";
+import LogoutScreen from "./LogoutScreen";
 import MainScreen from "./MainScreen";
 import NotFoundScreen from "./NotFoundScreen";
 import NotificationsScreen from "./NotificationsScreen";
 
 export default function Routes() {
   const { navigation, user, changeNavigation } = useContext(Context);
-  if (!user.token && navigation !== "Login") {
-    changeNavigation("Login");
-  }
+  React.useEffect(() => {
+    if (!user.token && navigation !== "Login") {
+      changeNavigation("Login");
+    }
+  }, [user.token, navigation]);
 
   return (
     <View>
@@ -24,8 +27,10 @@ export default function Routes() {
         <ExchangesScreen></ExchangesScreen>
       ) : navigation === "Add" ? (
         <AddTransactionScreen></AddTransactionScreen>
-      ) : navigation == "Login" ? (
+      ) : navigation === "Login" ? (
         <LoginScreen></LoginScreen>
+      ) : navigation === "Logout" ? (
+        <LogoutScreen></LogoutScreen>
       ) : (
         <NotFoundScreen></NotFoundScreen>
       )}

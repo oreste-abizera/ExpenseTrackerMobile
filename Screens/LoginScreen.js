@@ -14,7 +14,7 @@ import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 
 export default function LoginScreen() {
-  const { loginUser, changeNavigation } = React.useContext(Context);
+  const { loginUser, changeNavigation, user } = React.useContext(Context);
   const [identifier, setidentifier] = React.useState("");
   const [password, setpassword] = React.useState("");
 
@@ -49,6 +49,12 @@ export default function LoginScreen() {
       Toast.show("Invalid credentials", Toast.LONG);
     }
   };
+
+  React.useEffect(() => {
+    if (user.token) {
+      changeNavigation("Home");
+    }
+  }, [user]);
   return (
     <View style={[styles.container, { minHeight: height }]}>
       {/* <Text>Login here</Text> */}

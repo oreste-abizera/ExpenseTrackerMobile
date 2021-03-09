@@ -20,6 +20,7 @@ export default function SideDrawer() {
     { id: 4, title: "Add Expense and Incomes", path: "Add" },
     { id: 5, title: "Login", path: "Login" },
     { id: 6, title: "Register", path: "Register" },
+    { id: 7, title: "Logout", path: "Logout" },
   ];
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
