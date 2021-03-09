@@ -49,7 +49,6 @@ const styles = EStyleSheet.create({
   },
 });
 export default function NotificationsScreen() {
-  console.log("Notifications component mounted.");
   return (
     <View style={styles.notifications}>
       <Image

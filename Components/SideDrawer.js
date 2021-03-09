@@ -36,7 +36,6 @@ export default function SideDrawer() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
-    console.log(fadeAnim);
     Animated.timing(fadeAnim, {
       toValue: drawerOpen && fadeAnim._value === 0 ? 1 : 0,
       duration: 1500,

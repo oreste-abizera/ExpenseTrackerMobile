@@ -60,7 +60,6 @@ export default function LoginScreen() {
         changeNavigation("Home");
       }
     } else {
-      console.log(response);
       Toast.show("Error occured", Toast.LONG);
     }
   };
@@ -72,8 +71,8 @@ export default function LoginScreen() {
   }, [user]);
   return (
     <View style={[styles.container]}>
-      {/* <Text>Register here</Text> */}
       <View style={styles.form}>
+        <Text style={styles.title}>Register here</Text>
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Names</Text>
           <TextInput
@@ -129,6 +128,13 @@ const styles = EStyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    fontSize: 21,
+    marginBottom: "1.5rem",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontWeight: "700",
   },
   form: {
     // backgroundColor: "green",

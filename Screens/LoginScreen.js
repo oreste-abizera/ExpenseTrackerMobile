@@ -56,9 +56,9 @@ export default function LoginScreen() {
     }
   }, [user]);
   return (
-    <View style={[styles.container, { minHeight: height }]}>
-      {/* <Text>Login here</Text> */}
+    <View style={[styles.container]}>
       <View style={styles.form}>
+        <Text style={styles.title}>Login here</Text>
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Email or phone number</Text>
           <TextInput
@@ -94,11 +94,18 @@ const styles = EStyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  title: {
+    fontSize: 21,
+    marginBottom: "1.5rem",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontWeight: "700",
+  },
   form: {
     // backgroundColor: "green",
     width: "80%",
     padding: "2rem",
-    marginTop: "-40%",
+    marginTop: "30%",
   },
   formGroup: {
     marginVertical: "1rem",
