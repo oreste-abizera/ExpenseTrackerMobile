@@ -1,5 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useRef } from "react";
+import {
+  View,
+  Text,
+  Animated,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 
@@ -15,11 +21,26 @@ export default function SideDrawer() {
     { id: 5, title: "Login", path: "Login" },
     { id: 6, title: "Register", path: "Register" },
   ];
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    console.log(fadeAnim);
+    Animated.timing(fadeAnim, {
+      toValue: drawerOpen && fadeAnim._value === 0 ? 1 : 0,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, drawerOpen]);
+
   return (
-    <View
+    <Animated.View
       style={[
         styles.sidebarWrapper,
-        { transform: [{ translateX: drawerOpen ? 0 : -500 }] },
+        {
+          transform: [{ translateX: drawerOpen ? 0 : -500 }],
+          opacity: fadeAnim,
+        },
       ]}
     >
       {links.map((link) => (
@@ -34,7 +55,7 @@ export default function SideDrawer() {
           <Text>{link.title}</Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </Animated.View>
   );
 }
 
