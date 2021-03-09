@@ -24,14 +24,20 @@ const LeftComponent = () => {
 };
 
 const RightComponent = () => {
-  const { changeNavigation } = React.useContext(Context);
+  const { changeNavigation, user } = React.useContext(Context);
   return (
     <Icon
       name="home"
       type="font-awesome"
       color="#fff"
       size={22}
-      onPress={() => changeNavigation("Home")}
+      onPress={() => {
+        if (user.token) {
+          changeNavigation("Home");
+        } else {
+          alert("You need to login first.");
+        }
+      }}
     ></Icon>
   );
 };

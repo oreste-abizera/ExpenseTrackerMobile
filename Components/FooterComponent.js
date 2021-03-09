@@ -38,33 +38,33 @@ const styles = EStyleSheet.create({
 });
 
 export default function FooterComponent() {
-  const { navigation, changeNavigation } = useContext(Context);
+  const { navigation, user, changeNavigation } = useContext(Context);
 
   const iconsData = [
     {
       id: 1,
       name: "home",
       type: "font-awesome",
-      component: "Home",
+      component: user.token ? "Home" : "Login",
     },
     {
       id: 2,
       name: "exchange",
       type: "font-awesome",
-      component: "Exchanges",
+      component: user.token ? "Exchanges" : "Login",
     },
     {
       id: 3,
       name: "bell-o",
       type: "font-awesome",
       notifications: 10,
-      component: "Notifications",
+      component: user.token ? "Notifications" : "Login",
     },
     {
       id: 4,
       name: "plus",
       type: "font-awesome",
-      component: "Add",
+      component: user.token ? "Add" : "Login",
     },
   ];
   return (
@@ -79,15 +79,26 @@ export default function FooterComponent() {
             }
             {...iconData}
             color={
-              navigation === iconData.component
+              navigation === iconData.component &&
+              iconData.component !== "Login"
                 ? "rgb(32, 137, 220)"
                 : "#000000"
             }
-            onPress={() => changeNavigation(iconData.component)}
+            onPress={() => {
+              if (iconData.component === "Login") {
+                alert("You need to login first.");
+              }
+              changeNavigation(iconData.component);
+            }}
           ></Icon>
           {iconData.notifications > 0 && (
             <Badge
-              onPress={() => changeNavigation(iconData.component)}
+              onPress={() => {
+                if (iconData.component === "Login") {
+                  alert("You need to login first.");
+                }
+                changeNavigation(iconData.component);
+              }}
               containerStyle={styles.badge}
               value="9+"
               status="error"
