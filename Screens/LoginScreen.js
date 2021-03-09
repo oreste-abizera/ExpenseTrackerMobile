@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import {
   View,
@@ -8,8 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
+import Toast from "react-native-simple-toast";
+import Context from "../Context/ContextProvider";
+import url from "../utils/url";
 
 export default function LoginScreen() {
+  const { loginUser, changeNavigation } = React.useContext(Context);
   const [identifier, setidentifier] = React.useState("");
   const [password, setpassword] = React.useState("");
 
@@ -21,8 +26,28 @@ export default function LoginScreen() {
     setpassword(value);
   };
 
-  const handleSubmit = () => {
-    alert("Login pressed: " + identifier + " pass: " + password);
+  const handleSubmit = async () => {
+    const dataToSend = {
+      identifier,
+      password,
+    };
+    if (!identifier && !password) {
+      Toast.show("Fill all fields", Toast.LONG);
+      return;
+    }
+    let response;
+    await axios
+      .post(`${url}/api/users/login`, dataToSend)
+      .then((res) => (response = res.data))
+      .catch((err) => (response = err.response.data));
+
+    if (response.success) {
+      if (loginUser(response)) {
+        changeNavigation("Home");
+      }
+    } else {
+      Toast.show("Invalid credentials", Toast.LONG);
+    }
   };
   return (
     <View style={[styles.container, { minHeight: height }]}>
