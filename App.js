@@ -9,6 +9,7 @@ import { ContextProvider } from "./Context/ContextProvider";
 import Routes from "./Screens/Routes";
 import Loader from "./Components/Loader";
 import SideDrawer from "./Components/SideDrawer";
+import Overlay from "./Components/Overlay";
 
 EStyleSheet.build({
   $textColor: "#0275d8",
@@ -35,6 +36,7 @@ export default function App() {
           ) : (
             <>
               <SideDrawer></SideDrawer>
+              <Overlay></Overlay>
               <HeaderComponent></HeaderComponent>
               <ScrollView>
                 <Routes></Routes>

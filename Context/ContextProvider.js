@@ -45,7 +45,7 @@ export function ContextProvider({ children }) {
   const [previous, setprevious] = React.useState("");
   const [load, setload] = React.useState(false);
   const [add, setadd] = React.useState("expense");
-  const [drawerOpen, setdrawerOpen] = React.useState(true);
+  const [drawerOpen, setdrawerOpen] = React.useState(false);
 
   const toggleDrawer = () => {
     setdrawerOpen(!drawerOpen);
