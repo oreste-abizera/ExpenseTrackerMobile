@@ -10,7 +10,7 @@ import { Platform } from "react-native";
 
 const Context = React.createContext();
 const defaultUser = { token: null, info: {} };
-// const defaultLogin = {
+// const defaultUser = {
 //   token:
 //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMzg5ZDlmYjhkNDZmNDA0MDNmODA4NSIsImlhdCI6MTYxNDUwMzI2NSwiZXhwIjoxNjE3MDk1MjY1fQ.CTn-MgrOh5dg1QdyxqDOuxifZ3ozlJ6xz_XnqGibvgU",
 //   info: {
@@ -23,16 +23,11 @@ const defaultUser = { token: null, info: {} };
 //   },
 // };
 
-const defaultLogin = {
-  token: null,
-  info: {},
-};
-
-const syncUserToLocalStorage = (newUser) => {
+const syncUserToAsyncStorage = (newUser) => {
   AsyncStorage.setItem("user", JSON.stringify(newUser));
 };
 
-const loadUserFromLocalStorage = async () => {
+const loadUserFromAsyncStorage = async () => {
   let user = await AsyncStorage.getItem("user");
   if (user) {
     return JSON.parse(user);
@@ -70,8 +65,13 @@ export function ContextProvider({ children }) {
       info: response.data,
     };
     setuser(newUser);
-    syncUserToLocalStorage(newUser);
+    syncUserToAsyncStorage(newUser);
     return true;
+  };
+
+  const logout = () => {
+    setuser(defaultUser);
+    syncUserToAsyncStorage(defaultUser);
   };
 
   React.useEffect(() => {
@@ -79,7 +79,7 @@ export function ContextProvider({ children }) {
   }, [user.token, load]);
 
   async function loadData() {
-    setuser(await loadUserFromLocalStorage());
+    setuser(await loadUserFromAsyncStorage());
     if (user.token) {
       console.log("logged in.");
       settransactions(await loadTransactions(user.token));
@@ -87,8 +87,8 @@ export function ContextProvider({ children }) {
       setexpenses(await loadExpenses(user.token));
       setcategories(await loadCategories());
     } else if (Platform.OS === "android") {
-      syncUserToLocalStorage(defaultLogin);
-      setuser(defaultLogin);
+      syncUserToAsyncStorage(defaultUser);
+      setuser(defaultUser);
     }
   }
 
@@ -126,6 +126,7 @@ export function ContextProvider({ children }) {
         drawerOpen,
         toggleDrawer,
         loginUser,
+        logout,
       }}
     >
       {children}
