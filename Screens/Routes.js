@@ -3,6 +3,7 @@ import { View } from "react-native";
 import Context from "../Context/ContextProvider";
 import AddTransactionScreen from "./AddTransactionScreen";
 import ExchangesScreen from "./ExchangesScreen";
+import LoginScreen from "./LoginScreen";
 import MainScreen from "./MainScreen";
 import NotFoundScreen from "./NotFoundScreen";
 import NotificationsScreen from "./NotificationsScreen";
@@ -20,6 +21,8 @@ export default function Routes() {
         <ExchangesScreen></ExchangesScreen>
       ) : navigation === "Add" ? (
         <AddTransactionScreen></AddTransactionScreen>
+      ) : navigation == "Login" ? (
+        <LoginScreen></LoginScreen>
       ) : (
         <NotFoundScreen></NotFoundScreen>
       )}
