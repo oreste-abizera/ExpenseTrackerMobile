@@ -8,11 +8,12 @@ import LogoutScreen from "./LogoutScreen";
 import MainScreen from "./MainScreen";
 import NotFoundScreen from "./NotFoundScreen";
 import NotificationsScreen from "./NotificationsScreen";
+import RegisterScreen from "./RegisterScreen";
 
 export default function Routes() {
   const { navigation, user, changeNavigation } = useContext(Context);
   React.useEffect(() => {
-    if (!user.token && navigation !== "Login") {
+    if (!user.token && navigation !== "Login" && navigation !== "Register") {
       changeNavigation("Login");
     }
   }, [user.token, navigation]);
@@ -31,6 +32,8 @@ export default function Routes() {
         <LoginScreen></LoginScreen>
       ) : navigation === "Logout" ? (
         <LogoutScreen></LogoutScreen>
+      ) : navigation === "Register" ? (
+        <RegisterScreen></RegisterScreen>
       ) : (
         <NotFoundScreen></NotFoundScreen>
       )}

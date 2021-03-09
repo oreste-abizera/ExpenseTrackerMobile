@@ -10,18 +10,28 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 
 export default function SideDrawer() {
-  const { drawerOpen, toggleDrawer, changeNavigation } = React.useContext(
-    Context
-  );
-  const links = [
+  const {
+    drawerOpen,
+    navigation,
+    toggleDrawer,
+    user,
+    changeNavigation,
+  } = React.useContext(Context);
+  let links = [
     { id: 1, title: "Home", path: "Home" },
     { id: 2, title: "All Transactions", path: "Exchanges" },
     { id: 3, title: "Notifications", path: "Notifications" },
     { id: 4, title: "Add Expense and Incomes", path: "Add" },
-    { id: 5, title: "Login", path: "Login" },
-    { id: 6, title: "Register", path: "Register" },
-    { id: 7, title: "Logout", path: "Logout" },
   ];
+
+  if (user.token) {
+    links.push({ id: 7, title: "Logout", path: "Logout" });
+  } else {
+    links = [
+      { id: 5, title: "Login", path: user.token ? navigation : "Login" },
+      { id: 6, title: "Register", path: user.token ? navigation : "Register" },
+    ];
+  }
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -29,7 +39,7 @@ export default function SideDrawer() {
     console.log(fadeAnim);
     Animated.timing(fadeAnim, {
       toValue: drawerOpen && fadeAnim._value === 0 ? 1 : 0,
-      duration: 2000,
+      duration: 1500,
       useNativeDriver: true,
     }).start();
   }, [fadeAnim, drawerOpen]);
@@ -50,7 +60,9 @@ export default function SideDrawer() {
           key={link.id}
           onPress={() => {
             toggleDrawer();
-            changeNavigation(link.path);
+            changeNavigation(
+              user.token || link.path === "Register" ? link.path : "Login"
+            );
           }}
         >
           <Text>{link.title}</Text>
