@@ -12,43 +12,33 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Toast from "react-native-simple-toast";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
+import { useForm, Controller } from "react-hook-form";
 
 export default function LoginScreen() {
+  const { control, handleSubmit, errors } = useForm();
   const { loginUser, changeNavigation, user } = React.useContext(Context);
-  const [names, setnames] = React.useState("");
-  const [password, setpassword] = React.useState("");
-  const [email, setemail] = React.useState("");
-  const [phone, setphone] = React.useState();
+  const namesInputRef = React.useRef();
+  const emailInputRef = React.useRef();
+  const phoneInputRef = React.useRef();
+  const passwordInputRef = React.useRef();
+  const [sending, setsending] = React.useState(false);
 
-  const height = Dimensions.get("window").height;
-  const handleNames = (value) => {
-    setnames(value);
-  };
-  const handlePassword = (value) => {
-    setpassword(value);
-  };
-  const handleemail = (value) => {
-    setemail(value);
-  };
-  const handlephone = (value) => {
-    setphone(value);
-  };
-
-  const handleSubmit = async () => {
+  const onSubmit = async (data) => {
     const dataToSend = {
-      names,
-      password,
+      names: data.names,
+      password: data.password,
     };
-    if (!email && !phone) {
+    if (!data.email && !data.phone) {
       Toast.show("Fill Email or Phone number", Toast.LONG);
       return;
     }
-    if (email) dataToSend.email = email;
-    if (phone) dataToSend.phone = phone;
-    if (!password || !names) {
+    if (data.email) dataToSend.email = data.email;
+    if (data.phone) dataToSend.phone = data.phone;
+    if (!data.password || !data.names) {
       Toast.show("Check all fields", Toast.LONG);
       return;
     }
+    setsending(true);
     let response;
     await axios
       .post(`${url}/api/users/register`, dataToSend)
@@ -61,7 +51,9 @@ export default function LoginScreen() {
       }
     } else {
       Toast.show("Error occured", Toast.LONG);
+      alert("Error occured");
     }
+    setsending(false);
   };
 
   React.useEffect(() => {
@@ -69,52 +61,98 @@ export default function LoginScreen() {
       changeNavigation("Home");
     }
   }, [user]);
+
+  let errorNamesField = errors.names ? styles.errorLabel : {};
+  let errorPasswordField = errors.password ? styles.errorLabel : {};
+  let errorEmailField = errors.email ? styles.errorLabel : {};
+  let errorPhoneField = errors.phone ? styles.errorLabel : {};
   return (
     <View style={[styles.container]}>
       <View style={styles.form}>
         <Text style={styles.title}>Register here</Text>
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Names</Text>
-          <TextInput
-            placeholder=""
-            style={styles.formControl}
-            value={names}
-            onChangeText={(text) => handleNames(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="names"
+            control={control}
+            onFocus={() => namesInputRef.current.focus()}
+            rules={{ required: "This field is required." }}
+            render={(props) => (
+              <TextInput
+                {...props}
+                style={[styles.formControl, errorNamesField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={namesInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.names && <Text style={styles.error}>Enter names</Text>}
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Email</Text>
-          <TextInput
-            placeholder=""
-            style={styles.formControl}
-            value={email}
-            onChangeText={(text) => handleemail(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="email"
+            control={control}
+            onFocus={() => emailInputRef.current.focus()}
+            rules={{ required: "This field is required." }}
+            render={(props) => (
+              <TextInput
+                {...props}
+                style={[styles.formControl, errorEmailField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={emailInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.email && <Text style={styles.error}>Enter Email</Text>}
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Phone Number</Text>
-          <TextInput
-            placeholder=""
-            style={styles.formControl}
-            value={phone}
-            onChangeText={(text) => handlephone(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="phone"
+            control={control}
+            onFocus={() => phoneInputRef.current.focus()}
+            render={(props) => (
+              <TextInput
+                {...props}
+                style={[styles.formControl, errorPhoneField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={phoneInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.phone && <Text style={styles.error}>Enter Phone number</Text>}
         </View>
 
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Password</Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder=""
-            style={styles.formControl}
-            value={password}
-            onChangeText={(text) => handlePassword(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="password"
+            control={control}
+            onFocus={() => passwordInputRef.current.focus()}
+            rules={{ required: "This field is required." }}
+            render={(props) => (
+              <TextInput
+                {...props}
+                style={[styles.formControl, errorPasswordField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={passwordInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.password && <Text style={styles.error}>Enter Password</Text>}
         </View>
 
-        <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+        <TouchableOpacity
+          style={styles.submit}
+          onPress={handleSubmit(onSubmit)}
+        >
           <Text style={{ color: "#fff" }}>Register</Text>
         </TouchableOpacity>
       </View>
@@ -154,6 +192,9 @@ const styles = EStyleSheet.create({
     borderColor: "gray",
     borderWidth: "0.15rem",
   },
+  errorLabel: {
+    borderColor: "#c51244",
+  },
   submit: {
     marginVertical: "1.5rem",
     marginLeft: "30%",
@@ -164,5 +205,8 @@ const styles = EStyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "0.8rem",
+  },
+  error: {
+    color: "#c51244",
   },
 });
