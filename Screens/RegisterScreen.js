@@ -50,8 +50,9 @@ export default function LoginScreen() {
         changeNavigation("Home");
       }
     } else {
+      console.log(response);
       Toast.show("Error occured", Toast.LONG);
-      alert("Error occured");
+      alert(response.error || response.message || "Error occured");
     }
     setsending(false);
   };

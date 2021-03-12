@@ -35,7 +35,7 @@ export default function LoginScreen() {
       }
     } else {
       Toast.show("Invalid credentials", Toast.LONG);
-      alert("Invalid credentials");
+      alert(response.error || response.message || "Invalid credentials");
     }
     setsending(false);
   };
