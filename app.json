@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "ExTra",
-    "author": "Abizera Oreste",
     "slug": "ExpenseTracker",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,7 +25,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "bundleIdentifier": "com.coderspace.ExTra",
-      "versionCode": 1
+      "versionCode": 1,
+      "package": "com.coderspace.ExTra"
     },
     "web": {
       "favicon": "./assets/ExTra.png"
