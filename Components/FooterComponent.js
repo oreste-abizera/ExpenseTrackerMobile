@@ -57,7 +57,7 @@ export default function FooterComponent() {
       id: 3,
       name: "bell-o",
       type: "font-awesome",
-      notifications: 10,
+      notifications: true,
       component: user.token ? "Notifications" : "Login",
     },
     {
@@ -67,6 +67,7 @@ export default function FooterComponent() {
       component: user.token ? "Add" : "Login",
     },
   ];
+  let notifications = 22;
   return (
     <View style={styles.footer}>
       {iconsData.map((iconData) => (
@@ -91,7 +92,7 @@ export default function FooterComponent() {
               changeNavigation(iconData.component);
             }}
           ></Icon>
-          {iconData.notifications > 0 && (
+          {iconData.notifications && notifications > 0 && (
             <Badge
               onPress={() => {
                 if (iconData.component === "Login") {
@@ -100,7 +101,7 @@ export default function FooterComponent() {
                 changeNavigation(iconData.component);
               }}
               containerStyle={styles.badge}
-              value="9+"
+              value={notifications > 9 ? "9+" : notifications}
               status="error"
             ></Badge>
           )}
