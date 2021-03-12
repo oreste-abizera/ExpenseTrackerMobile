@@ -97,7 +97,10 @@ export default function LoginScreen() {
             name="email"
             control={control}
             onFocus={() => emailInputRef.current.focus()}
-            rules={{ required: "This field is required." }}
+            rules={{
+              required: "This field is required.",
+              pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/,
+            }}
             render={(props) => (
               <TextInput
                 {...props}
@@ -107,7 +110,13 @@ export default function LoginScreen() {
               ></TextInput>
             )}
           ></Controller>
-          {errors.email && <Text style={styles.error}>Enter Email</Text>}
+          {errors.email && (
+            <Text style={styles.error}>
+              {errors.email.type === "required"
+                ? "Enter Email"
+                : "Enter a valid email"}
+            </Text>
+          )}
         </View>
 
         <View style={styles.formGroup}>
@@ -153,7 +162,9 @@ export default function LoginScreen() {
           style={styles.submit}
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={{ color: "#fff" }}>Register</Text>
+          <Text style={{ color: "#fff" }}>
+            {sending ? "Wait..." : "Register"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
