@@ -12,32 +12,20 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Toast from "react-native-simple-toast";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
+import { useForm, Controller } from "react-hook-form";
 
 export default function LoginScreen() {
+  const { control, handleSubmit, errors } = useForm();
   const { loginUser, changeNavigation, user } = React.useContext(Context);
-  const [identifier, setidentifier] = React.useState("");
-  const [password, setpassword] = React.useState("");
+  const identifierInputRef = React.useRef();
+  const passwordInputRef = React.useRef();
+  const [sending, setsending] = React.useState(false);
 
-  const height = Dimensions.get("window").height;
-  const handleIdentifier = (value) => {
-    setidentifier(value);
-  };
-  const handlePassword = (value) => {
-    setpassword(value);
-  };
-
-  const handleSubmit = async () => {
-    const dataToSend = {
-      identifier,
-      password,
-    };
-    if (!identifier && !password) {
-      Toast.show("Fill all fields", Toast.LONG);
-      return;
-    }
+  const onSubmit = async (data) => {
+    setsending(true);
     let response;
     await axios
-      .post(`${url}/api/users/login`, dataToSend)
+      .post(`${url}/api/users/login`, data)
       .then((res) => (response = res.data))
       .catch((err) => (response = err.response.data));
 
@@ -47,7 +35,9 @@ export default function LoginScreen() {
       }
     } else {
       Toast.show("Invalid credentials", Toast.LONG);
+      alert("Invalid credentials");
     }
+    setsending(false);
   };
 
   React.useEffect(() => {
@@ -55,32 +45,60 @@ export default function LoginScreen() {
       changeNavigation("Home");
     }
   }, [user]);
+
+  let errorIdentifierField = errors.identifier ? styles.errorLabel : {};
+  let errorPasswordField = errors.password ? styles.errorLabel : {};
   return (
     <View style={[styles.container]}>
       <View style={styles.form}>
         <Text style={styles.title}>Login here</Text>
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Email or phone number</Text>
-          <TextInput
-            placeholder=""
-            style={styles.formControl}
-            value={identifier}
-            onChangeText={(text) => handleIdentifier(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="identifier"
+            control={control}
+            onFocus={() => identifierInputRef.current.focus()}
+            rules={{ required: "This field is required." }}
+            render={(props) => (
+              <TextInput
+                {...props}
+                style={[styles.formControl, errorIdentifierField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={identifierInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.identifier && (
+            <Text style={styles.error}>Enter email or phone number</Text>
+          )}
         </View>
         <View style={styles.formGroup}>
           <Text style={styles.inputLabel}>Password</Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder=""
-            style={styles.formControl}
-            value={password}
-            onChangeText={(text) => handlePassword(text)}
-          ></TextInput>
+          <Controller
+            defaultValue=""
+            name="password"
+            control={control}
+            rules={{ required: "This is required." }}
+            onFocus={() => passwordInputRef.current.focus()}
+            render={(props) => (
+              <TextInput
+                {...props}
+                secureTextEntry={true}
+                style={[styles.formControl, errorPasswordField]}
+                onChangeText={(text) => props.onChange(text)}
+                ref={passwordInputRef}
+              ></TextInput>
+            )}
+          ></Controller>
+          {errors.password && <Text style={styles.error}>Enter password</Text>}
         </View>
 
-        <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
-          <Text style={{ color: "#fff" }}>Login</Text>
+        <TouchableOpacity
+          style={styles.submit}
+          onPress={handleSubmit(onSubmit)}
+        >
+          <Text style={{ color: "#fff" }}>{sending ? "Wait..." : "Login"}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -119,6 +137,9 @@ const styles = EStyleSheet.create({
     borderColor: "gray",
     borderWidth: "0.15rem",
   },
+  errorLabel: {
+    borderColor: "#c51244",
+  },
   submit: {
     marginVertical: "1.5rem",
     marginLeft: "30%",
@@ -129,5 +150,8 @@ const styles = EStyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "0.8rem",
+  },
+  error: {
+    color: "#c51244",
   },
 });
