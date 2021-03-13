@@ -34,6 +34,17 @@ const loadUserFromAsyncStorage = async () => {
   }
   return defaultUser;
 };
+const syncCategoriesToAsyncStorage = async (newCategories) => {
+  await AsyncStorage.setItem("categories", JSON.stringify(newCategories));
+};
+
+const loadCategoriesFromAsyncStorage = async () => {
+  let categories = await AsyncStorage.getItem("categories");
+  if (categories) {
+    return JSON.parse(categories);
+  }
+  return [];
+};
 
 export function ContextProvider({ children }) {
   const [navigation, setNavigation] = React.useState("Login");
@@ -84,7 +95,14 @@ export function ContextProvider({ children }) {
       settransactions(await loadTransactions(user.token));
       setincomes(await loadIncomes(user.token));
       setexpenses(await loadExpenses(user.token));
-      setcategories(await loadCategories());
+
+      let tempCategories = (await loadCategories()) || [];
+      if (tempCategories.length === 0) {
+        const storageCategories = await loadCategoriesFromAsyncStorage();
+        if (storageCategories.length > 0) tempCategories = storageCategories;
+      }
+      await syncCategoriesToAsyncStorage(tempCategories);
+      await setcategories(tempCategories);
     } else if (user !== defaultUser) {
       await setuser(defaultUser);
     }

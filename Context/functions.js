@@ -18,9 +18,11 @@ export async function loadTransactions(token) {
 }
 
 export async function loadExpenses(token) {
-  let response = await axios.get(`${url}/api/transactions/expenses`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  let response = await axios
+    .get(`${url}/api/transactions/expenses`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => console.log("Error" + err));
 
   if (!response) {
     return [];
@@ -32,9 +34,11 @@ export async function loadExpenses(token) {
 }
 
 export async function loadIncomes(token) {
-  let response = await axios.get(`${url}/api/transactions/income`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  let response = await axios
+    .get(`${url}/api/transactions/income`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => console.log("Error" + err));
 
   if (!response) {
     return [];
@@ -46,7 +50,9 @@ export async function loadIncomes(token) {
 }
 
 export async function loadCategories() {
-  let response = await axios.get(`${url}/api/categories`);
+  let response = await axios
+    .get(`${url}/api/categories`)
+    .catch((err) => console.log("Error" + err));
 
   if (!response) {
     return [];
