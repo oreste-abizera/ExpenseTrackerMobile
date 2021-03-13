@@ -14,6 +14,30 @@ const loadTransactionsFromAsyncStorage = async () => {
   return [];
 };
 
+const syncExpensesToAsyncStorage = async (newExpenses) => {
+  await AsyncStorage.setItem("expenses", JSON.stringify(newExpenses));
+};
+
+const loadExpensesFromAsyncStorage = async () => {
+  let expenses = await AsyncStorage.getItem("expenses");
+  if (expenses) {
+    return JSON.parse(expenses);
+  }
+  return [];
+};
+
+const syncIncomesToAsyncStorage = async (newIncomes) => {
+  await AsyncStorage.setItem("incomes", JSON.stringify(newIncomes));
+};
+
+const loadIncomesFromAsyncStorage = async () => {
+  let incomes = await AsyncStorage.getItem("incomes");
+  if (incomes) {
+    return JSON.parse(incomes);
+  }
+  return [];
+};
+
 export async function loadTransactions(token) {
   let response = await axios
     .get(`${url}/api/transactions`, {
@@ -43,13 +67,19 @@ export async function loadExpenses(token) {
     })
     .catch((err) => console.log("Error" + err));
 
-  if (!response) {
-    return [];
+  let data = [];
+  if (response) {
+    if (response.data) {
+      data = response.data.data;
+    }
   }
-  if (response.data) {
-    return response.data.data;
+
+  if (data.length === 0) {
+    data = await loadExpensesFromAsyncStorage();
+  } else {
+    await syncExpensesToAsyncStorage(data);
   }
-  return [];
+  return data;
 }
 
 export async function loadIncomes(token) {
@@ -59,13 +89,19 @@ export async function loadIncomes(token) {
     })
     .catch((err) => console.log("Error" + err));
 
-  if (!response) {
-    return [];
+  let data = [];
+  if (response) {
+    if (response.data) {
+      data = response.data.data;
+    }
   }
-  if (response.data) {
-    return response.data.data;
+
+  if (data.length === 0) {
+    data = await loadIncomesFromAsyncStorage();
+  } else {
+    await syncIncomesToAsyncStorage(data);
   }
-  return [];
+  return data;
 }
 
 export async function loadCategories() {
