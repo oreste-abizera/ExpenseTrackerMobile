@@ -23,8 +23,8 @@ const defaultUser = { token: null, info: {} };
 //   },
 // };
 
-const syncUserToAsyncStorage = (newUser) => {
-  AsyncStorage.setItem("user", JSON.stringify(newUser));
+const syncUserToAsyncStorage = async (newUser) => {
+  await AsyncStorage.setItem("user", JSON.stringify(newUser));
 };
 
 const loadUserFromAsyncStorage = async () => {
@@ -79,15 +79,14 @@ export function ContextProvider({ children }) {
   }, [user.token, load]);
 
   async function loadData() {
-    setuser(await loadUserFromAsyncStorage());
+    await setuser(await loadUserFromAsyncStorage());
     if (user.token) {
       settransactions(await loadTransactions(user.token));
       setincomes(await loadIncomes(user.token));
       setexpenses(await loadExpenses(user.token));
       setcategories(await loadCategories());
-    } else if (Platform.OS === "android") {
-      syncUserToAsyncStorage(defaultUser);
-      setuser(defaultUser);
+    } else if (user !== defaultUser) {
+      await setuser(defaultUser);
     }
   }
 
