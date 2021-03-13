@@ -3,6 +3,9 @@
     "name": "ExTra",
     "slug": "ExpenseTracker",
     "version": "1.0.0",
+    "privacy": "public",
+    "description": "ExTra is an application which helps you to track your daily incomes and expenses.",
+    "owner": "Abizera Oreste",
     "platforms": ["android", "ios"],
     "orientation": "portrait",
     "icon": "./assets/icon1.png",
@@ -26,7 +29,7 @@
       "package": "com.coderspace.ExTra"
     },
     "web": {
-      "favicon": "./assets/ExTra.png"
+      "favicon": "./assets/icon1.png"
     }
   }
 }
