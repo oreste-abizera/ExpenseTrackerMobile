@@ -1,5 +1,18 @@
 import axios from "axios";
 import url from "../utils/url";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const syncTransactionsToAsyncStorage = async (newtransactions) => {
+  await AsyncStorage.setItem("transactions", JSON.stringify(newtransactions));
+};
+
+const loadTransactionsFromAsyncStorage = async () => {
+  let transactions = await AsyncStorage.getItem("transactions");
+  if (transactions) {
+    return JSON.parse(transactions);
+  }
+  return [];
+};
 
 export async function loadTransactions(token) {
   let response = await axios
@@ -8,13 +21,19 @@ export async function loadTransactions(token) {
     })
     .catch((err) => console.log("Error" + err));
 
-  if (!response) {
-    return [];
+  let data = [];
+  if (response) {
+    if (response.data) {
+      data = response.data.data;
+    }
   }
-  if (response.data) {
-    return response.data.data;
+
+  if (data.length === 0) {
+    data = await loadTransactionsFromAsyncStorage();
+  } else {
+    await syncTransactionsToAsyncStorage(data);
   }
-  return [];
+  return data;
 }
 
 export async function loadExpenses(token) {
