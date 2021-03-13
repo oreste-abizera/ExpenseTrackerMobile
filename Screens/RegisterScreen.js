@@ -43,9 +43,18 @@ export default function LoginScreen() {
     await axios
       .post(`${url}/api/users/register`, dataToSend)
       .then((res) => (response = res.data))
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        if (err.response) {
+          response = err.response.data;
+        } else {
+          response = null;
+        }
+      });
 
-    if (response.success) {
+    if (!response) {
+      Toast.show("Error Occured.", Toast.LONG);
+      alert("Error occured");
+    } else if (response.success) {
       if (loginUser(response)) {
         changeNavigation("Home");
       }
@@ -153,6 +162,7 @@ export default function LoginScreen() {
                 style={[styles.formControl, errorPasswordField]}
                 onChangeText={(text) => props.onChange(text)}
                 ref={passwordInputRef}
+                secureTextEntry={true}
               ></TextInput>
             )}
           ></Controller>

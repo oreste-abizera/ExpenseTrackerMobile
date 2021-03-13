@@ -27,9 +27,18 @@ export default function LoginScreen() {
     await axios
       .post(`${url}/api/users/login`, data)
       .then((res) => (response = res.data))
-      .catch((err) => (response = err.response.data));
+      .catch((err) => {
+        if (err.response) {
+          response = err.response.data;
+        } else {
+          response = null;
+        }
+      });
 
-    if (response.success) {
+    if (!response) {
+      Toast.show("Error Occured.", Toast.LONG);
+      alert("Error occured");
+    } else if (response.success) {
       if (loginUser(response)) {
         changeNavigation("Home");
       }
