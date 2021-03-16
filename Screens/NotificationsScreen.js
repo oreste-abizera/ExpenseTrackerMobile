@@ -13,6 +13,12 @@ import * as Notifications from "expo-notifications";
 import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return { shouldShowAlert: true };
+  },
+});
+
 export default function NotificationsScreen() {
   const [allowedNotifications, setallowedNotifications] = useState(false);
 
@@ -20,7 +26,7 @@ export default function NotificationsScreen() {
     async function loadStatus() {
       let response = await AsyncStorage.getItem("notificationsAllow");
       if (response) {
-        setallowedNotifications(JSON.parse(response));
+        await setallowedNotifications(JSON.parse(response));
       }
     }
     loadStatus();
@@ -37,7 +43,7 @@ export default function NotificationsScreen() {
           body: "Notifications are now Enabled.",
         },
         trigger: {
-          seconds: 60,
+          seconds: 1,
         },
       });
 
@@ -60,7 +66,16 @@ export default function NotificationsScreen() {
   const disableNotifications = async () => {
     setallowedNotifications(false);
     await AsyncStorage.setItem("notificationsAllow", JSON.stringify(false));
-    Notifications.cancelAllScheduledNotificationsAsync();
+    await Notifications.cancelAllScheduledNotificationsAsync();
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "OOps!",
+        body: "Notifications are now Disabled.",
+      },
+      trigger: {
+        seconds: 1,
+      },
+    });
   };
   return (
     <View style={styles.notifications}>
