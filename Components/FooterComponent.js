@@ -67,7 +67,7 @@ export default function FooterComponent() {
       component: user.token ? "Add" : "Login",
     },
   ];
-  let notifications = 22;
+  let notifications = 0;
   return (
     <View style={styles.footer}>
       {iconsData.map((iconData) => (

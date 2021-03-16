@@ -80,9 +80,10 @@ export function ContextProvider({ children }) {
     return true;
   };
 
-  const logout = () => {
+  const logout = async () => {
     setuser(defaultUser);
     syncUserToAsyncStorage(defaultUser);
+    await AsyncStorage.clear();
   };
 
   React.useEffect(() => {
