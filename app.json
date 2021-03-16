@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.coderspace.ExTra"
+      "package": "com.coderspace.ExTra",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/icon.png"
