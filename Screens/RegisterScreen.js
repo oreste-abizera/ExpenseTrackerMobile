@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Toast from "react-native-simple-toast";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 import { useForm, Controller } from "react-hook-form";
+import { Alert } from "react-native";
 
 export default function LoginScreen() {
   const { control, handleSubmit, errors } = useForm();
@@ -29,13 +29,13 @@ export default function LoginScreen() {
       password: data.password,
     };
     if (!data.email && !data.phone) {
-      Toast.show("Fill Email or Phone number", Toast.LONG);
+      Alert.alert("Error", "Fill Email or Phone number");
       return;
     }
     if (data.email) dataToSend.email = data.email;
     if (data.phone) dataToSend.phone = data.phone;
     if (!data.password || !data.names) {
-      Toast.show("Check all fields", Toast.LONG);
+      Alert.alert("Error", "Check all fields");
       return;
     }
     setsending(true);
@@ -52,16 +52,16 @@ export default function LoginScreen() {
       });
 
     if (!response) {
-      Toast.show("Error Occured.", Toast.LONG);
-      alert("Error occured");
+      Alert.alert("Error", "Error Occured while connecting to server.");
     } else if (response.success) {
       if (loginUser(response)) {
         changeNavigation("Home");
       }
     } else {
-      console.log(response);
-      Toast.show("Error occured", Toast.LONG);
-      alert(response.error || response.message || "Error occured");
+      Alert.alert(
+        "Error",
+        response.error || response.message || "Error occured"
+      );
     }
     setsending(false);
   };

@@ -4,6 +4,7 @@ import { Icon, Badge } from "react-native-elements";
 import React from "react";
 import Context from "../Context/ContextProvider";
 import { useContext } from "react";
+import { Alert } from "react-native";
 
 const styles = EStyleSheet.create({
   footer: {
@@ -87,7 +88,7 @@ export default function FooterComponent() {
             }
             onPress={() => {
               if (iconData.component === "Login") {
-                alert("You need to login first.");
+                Alert.alert("Error", "You need to login first.");
               }
               changeNavigation(iconData.component);
             }}
@@ -96,7 +97,7 @@ export default function FooterComponent() {
             <Badge
               onPress={() => {
                 if (iconData.component === "Login") {
-                  alert("You need to login first.");
+                  Alert.alert("Error", "You need to login first.");
                 }
                 changeNavigation(iconData.component);
               }}

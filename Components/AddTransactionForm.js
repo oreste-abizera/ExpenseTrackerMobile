@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
@@ -13,7 +12,6 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 import RadioButton from "./RadioButton";
-import Toast from "react-native-simple-toast";
 import { Alert } from "react-native";
 
 const AddTransactionForm = () => {
@@ -76,7 +74,6 @@ const AddTransactionForm = () => {
 
     if (!response) {
       setsending(false);
-      Toast.show("Error occured", Toast.LONG);
       Alert.alert("Error", "Error occured connecting to server");
       return;
     }
@@ -85,7 +82,6 @@ const AddTransactionForm = () => {
       changeNavigation("Home");
     } else {
       Alert.alert("Error", response.error || "Check all inputs");
-      Toast.show("Check all inputs", Toast.LONG);
     }
     setsending(false);
   };

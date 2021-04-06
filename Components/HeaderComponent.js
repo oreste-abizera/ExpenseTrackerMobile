@@ -35,7 +35,7 @@ const RightComponent = () => {
         if (user.token) {
           changeNavigation("Home");
         } else {
-          alert("You need to login first.");
+          Alert.alert("Error", "You need to login first.");
         }
       }}
     ></Icon>

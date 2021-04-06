@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Toast from "react-native-simple-toast";
 import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 import { useForm, Controller } from "react-hook-form";
+import { Alert } from "react-native";
 
 export default function LoginScreen() {
   const { control, handleSubmit, errors } = useForm();
@@ -36,15 +36,16 @@ export default function LoginScreen() {
       });
 
     if (!response) {
-      Toast.show("Error Occured.", Toast.LONG);
-      alert("Error occured");
+      Alert.alert("Error occured");
     } else if (response.success) {
       if (loginUser(response)) {
         changeNavigation("Home");
       }
     } else {
-      Toast.show("Invalid credentials", Toast.LONG);
-      alert(response.error || response.message || "Invalid credentials");
+      Alert.alert(
+        "Error",
+        response.error || response.message || "Invalid credentials"
+      );
     }
     setsending(false);
   };
