@@ -60,6 +60,21 @@ export async function loadTransactions(token) {
   return data;
 }
 
+export async function deleteTransaction(token, id) {
+  let response = await axios
+    .delete(`${url}/api/transactions/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => console.log("Error" + err));
+
+  if (response) {
+    if (response.data) {
+      return response.data.success || false;
+    }
+  }
+  return false;
+}
+
 export async function loadExpenses(token) {
   let response = await axios
     .get(`${url}/api/transactions/expenses`, {

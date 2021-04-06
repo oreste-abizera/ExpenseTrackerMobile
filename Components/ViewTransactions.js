@@ -3,9 +3,10 @@ import { Text, View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
+import { deleteTransaction } from "../Context/functions";
 
 export default function ViewTransactions({ selectedDate }) {
-  const { getTotals, transactions } = React.useContext(Context);
+  const { getTotals, transactions, user, reload } = React.useContext(Context);
 
   async function removeTransaction(id) {
     await Alert.alert(
@@ -14,8 +15,12 @@ export default function ViewTransactions({ selectedDate }) {
       [
         {
           text: "Yes",
-          onPress: () => {
-            console.log("removing transaction: " + id);
+          onPress: async () => {
+            if (await deleteTransaction(user.token, id)) {
+              reload();
+            } else {
+              Alert.alert("Error", "deletion failed.");
+            }
           },
         },
         {
