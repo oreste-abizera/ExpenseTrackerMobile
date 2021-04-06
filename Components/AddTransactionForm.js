@@ -14,6 +14,7 @@ import Context from "../Context/ContextProvider";
 import url from "../utils/url";
 import RadioButton from "./RadioButton";
 import Toast from "react-native-simple-toast";
+import { Alert } from "react-native";
 
 const AddTransactionForm = () => {
   const {
@@ -76,12 +77,14 @@ const AddTransactionForm = () => {
     if (!response) {
       setsending(false);
       Toast.show("Error occured", Toast.LONG);
+      Alert.alert("Error", "Error occured connecting to server");
       return;
     }
     if (response.success) {
       reload();
       changeNavigation("Home");
     } else {
+      Alert.alert("Error", response.error || "Check all inputs");
       Toast.show("Check all inputs", Toast.LONG);
     }
     setsending(false);
