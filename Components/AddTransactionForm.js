@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   StyleSheet,
@@ -35,6 +35,7 @@ const AddTransactionForm = () => {
     type: null,
     mode: null,
   });
+  const [sending, setsending] = React.useState(false);
 
   const changeType = (newValue) => {
     settype(newValue);
@@ -56,6 +57,7 @@ const AddTransactionForm = () => {
   };
 
   const handleSubmit = async () => {
+    setsending(true);
     const dataToSend = {
       amount,
       type,
@@ -69,14 +71,20 @@ const AddTransactionForm = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       })
       .then((res) => (response = res.data))
-      .catch((err) => (response = err.response.data));
+      .catch((err) => (response = err?.response?.data));
 
+    if (!response) {
+      setsending(false);
+      Toast.show("Error occured", Toast.LONG);
+      return;
+    }
     if (response.success) {
       reload();
       changeNavigation("Home");
     } else {
       Toast.show("Check all inputs", Toast.LONG);
     }
+    setsending(false);
   };
   const errorControl = [styles.formControl, styles.formControlError];
   const errorLabel = [styles.inputLabel, styles.errorInputLabel];
@@ -190,8 +198,12 @@ const AddTransactionForm = () => {
           onChangeText={(text) => handlenote(text)}
         ></TextInput>
       </View>
-      <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
-        <Text style={{ color: "#fff" }}>Save</Text>
+      <TouchableOpacity
+        style={styles.submit}
+        onPress={handleSubmit}
+        disabled={sending}
+      >
+        <Text style={{ color: "#fff" }}>{sending ? "Wait..." : "Save"}</Text>
       </TouchableOpacity>
     </View>
   );
