@@ -1,11 +1,29 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
 
 export default function ViewTransactions({ selectedDate }) {
   const { getTotals, transactions } = React.useContext(Context);
+
+  async function removeTransaction(id) {
+    await Alert.alert(
+      "Confirmation",
+      "Do you want to remove this transaction?",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            console.log("removing transaction: " + id);
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  }
 
   function sameDay(d1, d2) {
     d1 = new Date(d1);
@@ -80,6 +98,13 @@ export default function ViewTransactions({ selectedDate }) {
                   : transaction.amount}
                 Rwf
               </Text>
+              <Icon
+                name="remove"
+                type="font-awesome"
+                color="rgb(32, 137, 220)"
+                size={22}
+                onPress={() => removeTransaction(transaction._id)}
+              ></Icon>
             </View>
           ))}
         </View>
