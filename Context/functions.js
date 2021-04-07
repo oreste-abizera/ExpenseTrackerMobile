@@ -1,7 +1,12 @@
 import axios from "axios";
 import url from "../utils/url";
 import AsyncStorage from "@react-native-community/async-storage";
-import { TRANSACTIONS, EXPENSES, INCOMES } from "./AsyncStorageVariables";
+import {
+  TRANSACTIONS,
+  EXPENSES,
+  INCOMES,
+  LOCALTRANSACTIONS,
+} from "./AsyncStorageVariables";
 
 const syncTransactionsToAsyncStorage = async (newtransactions) => {
   await AsyncStorage.setItem(TRANSACTIONS, JSON.stringify(newtransactions));
@@ -133,6 +138,21 @@ export async function loadCategories() {
   }
 
   return [];
+}
+
+export const loadLocalTransactionsFromAsyncStorage = async () => {
+  let transactions = await AsyncStorage.getItem(LOCALTRANSACTIONS);
+  if (transactions) {
+    return JSON.parse(transactions);
+  }
+  return [];
+};
+
+export async function saveTransactionLocally(newTransaction) {
+  let transactions = (await loadLocalTransactionsFromAsyncStorage()) || [];
+  transactions.push(newTransaction);
+  await AsyncStorage.setItem(LOCALTRANSACTIONS, JSON.stringify(transactions));
+  return true;
 }
 
 export {

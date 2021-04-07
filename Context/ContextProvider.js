@@ -8,6 +8,7 @@ import {
   loadIncomesFromAsyncStorage,
   loadExpensesFromAsyncStorage,
   loadTransactionsFromAsyncStorage,
+  saveTransactionLocally,
 } from "./functions";
 import { CATEGORIES, USER } from "./AsyncStorageVariables";
 
@@ -130,7 +131,18 @@ export function ContextProvider({ children }) {
   }
 
   async function saveLocalTransaction(newTransaction) {
-    console.log(newTransaction);
+    if (user.token) {
+      if (
+        await saveTransactionLocally({
+          ...newTransaction,
+          user: user.info._id,
+          date: Date.now(),
+          local: true,
+        })
+      ) {
+        changeNavigation("Home");
+      }
+    }
   }
 
   function getTotals(incomesP = incomes, expensesP = expenses) {
