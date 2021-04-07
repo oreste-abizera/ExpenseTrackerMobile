@@ -172,6 +172,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.submit}
           onPress={handleSubmit(onSubmit)}
+          disabled={sending}
         >
           <Text style={{ color: "#fff" }}>
             {sending ? "Wait..." : "Register"}

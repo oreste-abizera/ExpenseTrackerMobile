@@ -36,7 +36,10 @@ export default function LoginScreen() {
       });
 
     if (!response) {
-      Alert.alert("Error occured");
+      Alert.alert(
+        "Error occured",
+        "Error occured while connecting to the server"
+      );
     } else if (response.success) {
       if (loginUser(response)) {
         changeNavigation("Home");
@@ -107,6 +110,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.submit}
           onPress={handleSubmit(onSubmit)}
+          disabled={sending}
         >
           <Text style={{ color: "#fff" }}>{sending ? "Wait..." : "Login"}</Text>
         </TouchableOpacity>
