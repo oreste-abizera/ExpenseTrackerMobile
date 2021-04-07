@@ -174,6 +174,7 @@ const styles = EStyleSheet.create({
   transactions: {
     width: "95%",
     marginTop: "1rem",
+    marginBottom: "1rem",
     padding: "0.5rem",
     borderRadius: "0.5rem",
     backgroundColor: "#ffffff",
