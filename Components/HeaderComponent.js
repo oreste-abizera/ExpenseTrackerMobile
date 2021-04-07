@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import { Header, Icon } from "react-native-elements";
 import Context from "../Context/ContextProvider";
 
