@@ -84,7 +84,7 @@ const styles = EStyleSheet.create({
     top: 65,
     left: 0,
     width: "65%",
-    height: "40%",
+    height: "60%",
     padding: "1.5rem",
     backgroundColor: "#fff",
     zIndex: 4,

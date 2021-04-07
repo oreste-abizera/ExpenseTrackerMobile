@@ -143,7 +143,12 @@ export async function loadCategories() {
 export const loadLocalTransactionsFromAsyncStorage = async () => {
   let transactions = await AsyncStorage.getItem(LOCALTRANSACTIONS);
   if (transactions) {
-    return JSON.parse(transactions);
+    let tempTransactions = JSON.parse(transactions);
+    tempTransactions.map((transaction) => {
+      transaction.amount = parseInt(transaction.amount);
+      return transaction;
+    });
+    return tempTransactions;
   }
   return [];
 };

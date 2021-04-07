@@ -9,6 +9,7 @@ import {
   loadExpensesFromAsyncStorage,
   loadTransactionsFromAsyncStorage,
   saveTransactionLocally,
+  loadLocalTransactionsFromAsyncStorage,
 } from "./functions";
 import { CATEGORIES, USER } from "./AsyncStorageVariables";
 
@@ -62,6 +63,14 @@ export function ContextProvider({ children }) {
   const [add, setadd] = React.useState("expense");
   const [drawerOpen, setdrawerOpen] = React.useState(false);
   const [nextDrawerState, setnextDrawerState] = React.useState(false);
+  const [localTransactions, setlocalTransactions] = React.useState([]);
+
+  const localIncomes = localTransactions.filter(
+    (transaction) => transaction.type === "income"
+  );
+  const localExpenses = localTransactions.filter(
+    (transaction) => transaction.type === "expense"
+  );
 
   const toggleDrawer = () => {
     if (drawerOpen) {
@@ -108,6 +117,7 @@ export function ContextProvider({ children }) {
     settransactions(await loadTransactionsFromAsyncStorage());
     setincomes(await loadIncomesFromAsyncStorage());
     setexpenses(await loadExpensesFromAsyncStorage());
+    setlocalTransactions(await loadLocalTransactionsFromAsyncStorage());
   }
 
   async function loadData() {
@@ -141,11 +151,15 @@ export function ContextProvider({ children }) {
         })
       ) {
         changeNavigation("Home");
+        reload();
       }
     }
   }
 
-  function getTotals(incomesP = incomes, expensesP = expenses) {
+  function getTotals(
+    incomesP = incomes.concat(localIncomes),
+    expensesP = expenses.concat(localExpenses)
+  ) {
     let expensesAmount = 0,
       incomeAmount = 0;
     for (let i = 0; i < expensesP.length; i++) {
@@ -170,9 +184,9 @@ export function ContextProvider({ children }) {
         navigation,
         changeNavigation,
         getTotals,
-        incomes,
-        expenses,
-        transactions,
+        incomes: incomes.concat(localIncomes),
+        expenses: expenses.concat(localExpenses),
+        transactions: transactions.concat(localTransactions),
         saveLocalTransaction,
         reload,
         changeAdd,

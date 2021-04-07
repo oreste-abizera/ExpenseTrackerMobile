@@ -77,8 +77,11 @@ export default function ViewTransactions({ selectedDate }) {
               ? "No transactions done in the selected day"
               : "List of Transactions"}
           </Text>
-          {displayTransactions.map((transaction) => (
-            <View key={transaction._id} style={styles.transaction}>
+          {displayTransactions.map((transaction, index) => (
+            <View
+              key={transaction._id || `transaction-${index}`}
+              style={styles.transaction}
+            >
               <View style={styles.iconContainer}>
                 <Icon
                   name={transaction.category?.icon}
