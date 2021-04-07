@@ -64,6 +64,29 @@ const AddTransactionForm = () => {
       mode,
       note,
     };
+
+    //validate data locally
+    let error = "";
+    if (!dataToSend.type) {
+      error = "Please select Transaction type";
+    } else if (!dataToSend.amount) {
+      error = "Please select amount";
+    } else if (!dataToSend.mode) {
+      error = "Please select Mode of payment";
+    } else if (!dataToSend.category) {
+      error = "Please select Category";
+    } else if (!dataToSend.note) {
+      error = "Please enter note for this transaction";
+    } else if (dataToSend.note.length < 5) {
+      error = "Note must be at least 5 characters";
+    }
+
+    if (error) {
+      Alert.alert("Error", error || "Check all inputs");
+      setsending(false);
+      return;
+    }
+
     let response;
     await axios
       .post(`${url}/api/transactions`, dataToSend, {
