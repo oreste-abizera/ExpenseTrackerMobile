@@ -103,7 +103,13 @@ const AddTransactionForm = () => {
           <Text onPress={() => changeType("expense")}>
             <RadioButton selected={type === "expense"}></RadioButton>
           </Text>
-          <Text style={{ marginLeft: 5 }} onPress={() => changeType("expense")}>
+          <Text
+            style={{
+              marginLeft: 5,
+              color: type === "expense" ? "rgb(32, 137, 220)" : "#000",
+            }}
+            onPress={() => changeType("expense")}
+          >
             Expense
           </Text>
         </View>
@@ -119,7 +125,13 @@ const AddTransactionForm = () => {
           <Text onPress={() => changeType("income")}>
             <RadioButton selected={type === "income"}></RadioButton>
           </Text>
-          <Text style={{ marginLeft: 5 }} onPress={() => changeType("income")}>
+          <Text
+            style={{
+              marginLeft: 5,
+              color: type === "income" ? "rgb(32, 137, 220)" : "#000",
+            }}
+            onPress={() => changeType("income")}
+          >
             Income
           </Text>
         </View>
