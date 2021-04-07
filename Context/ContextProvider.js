@@ -127,7 +127,7 @@ export function ContextProvider({ children }) {
     if (user.token) {
       syncTransactions();
     }
-  }, [load, localTransactions]);
+  });
 
   async function loadDataFromAsyncStorage() {
     setcategories(await loadCategoriesFromAsyncStorage());

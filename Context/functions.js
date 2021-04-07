@@ -191,7 +191,8 @@ export const sendSyncedTransactionsToServer = async (token) => {
       return false;
     }
 
-    if (response.data?.success) {
+    if (response.success) {
+      await AsyncStorage.setItem(LOCALTRANSACTIONS, JSON.stringify([]));
       return true;
     } else {
       return false;
