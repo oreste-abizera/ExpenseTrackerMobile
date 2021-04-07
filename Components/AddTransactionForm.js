@@ -97,7 +97,16 @@ const AddTransactionForm = () => {
 
     if (!response) {
       setsending(false);
-      Alert.alert("Error", "Error occured connecting to server");
+      Alert.alert("Error", "Error occured connecting to server", [
+        { text: "Cancel" },
+        {
+          text: "Try again",
+          onPress: () => {
+            handleSubmit();
+          },
+        },
+        { text: "Save Locally" },
+      ]);
       return;
     }
     if (response.success) {
