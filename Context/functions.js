@@ -49,7 +49,7 @@ export async function loadTransactions(token) {
     .get(`${url}/api/transactions`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .catch((err) => console.log("Error" + err));
+    .catch((err) => console.log("" + err));
 
   let data = [];
   if (response) {
@@ -71,7 +71,7 @@ export async function deleteTransaction(token, id) {
     .delete(`${url}/api/transactions/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .catch((err) => console.log("Error" + err));
+    .catch((err) => console.log("" + err));
 
   if (response) {
     if (response.data) {
@@ -86,7 +86,7 @@ export async function loadExpenses(token) {
     .get(`${url}/api/transactions/expenses`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .catch((err) => console.log("Error" + err));
+    .catch((err) => console.log("" + err));
 
   let data = [];
   if (response) {
@@ -108,7 +108,7 @@ export async function loadIncomes(token) {
     .get(`${url}/api/transactions/income`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .catch((err) => console.log("Error" + err));
+    .catch((err) => console.log("" + err));
 
   let data = [];
   if (response) {
@@ -128,7 +128,7 @@ export async function loadIncomes(token) {
 export async function loadCategories() {
   let response = await axios
     .get(`${url}/api/categories`)
-    .catch((err) => console.log("Error" + err));
+    .catch((err) => console.log("" + err));
 
   if (!response) {
     return [];
@@ -171,10 +171,34 @@ export async function removeLocalTransaction(transactionToRemove) {
   return true;
 }
 
-export const sendSyncedTransactionsToServer = async () => {
+export const sendSyncedTransactionsToServer = async (token) => {
   let transactions = (await loadLocalTransactionsFromAsyncStorage()) || [];
+  let response;
   //request to sync transactions to server
-  console.log(`trying to sync ${transactions.length} transactions to server`);
+  if (transactions.length > 0) {
+    await axios
+      .post(
+        `${url}/api/transactions/sync`,
+        { transactions },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => (response = res.data))
+      .catch((err) => (response = err?.response?.data));
+
+    if (!response) {
+      return false;
+    }
+
+    if (response.data?.success) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  return false;
 };
 
 export {

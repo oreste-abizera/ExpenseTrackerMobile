@@ -113,6 +113,22 @@ export function ContextProvider({ children }) {
     loadData();
   }, [user.token, load]);
 
+  React.useEffect(() => {
+    async function syncTransactions() {
+      //trying to send synced transactions to server
+      if (localTransactions.length > 0) {
+        if (await sendSyncedTransactionsToServer(user.token)) {
+          reload();
+        } else {
+          console.log("Syncing failed");
+        }
+      }
+    }
+    if (user.token) {
+      syncTransactions();
+    }
+  }, [load, localTransactions]);
+
   async function loadDataFromAsyncStorage() {
     setcategories(await loadCategoriesFromAsyncStorage());
     settransactions(await loadTransactionsFromAsyncStorage());
@@ -175,11 +191,6 @@ export function ContextProvider({ children }) {
   const reload = () => {
     setload(!load);
   };
-
-  //trying to send synced transactions to server
-  if (localTransactions.length > 0) {
-    sendSyncedTransactionsToServer();
-  }
 
   return (
     <Context.Provider
