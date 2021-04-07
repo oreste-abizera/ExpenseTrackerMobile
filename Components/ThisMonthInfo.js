@@ -92,7 +92,7 @@ export default function ThisMonthInfo() {
   ];
 
   if (expenses === 0 && income === 0) {
-    console.log("No transactions found");
+    // console.log("No transactions found");
   }
 
   return (

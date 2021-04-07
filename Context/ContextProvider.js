@@ -65,6 +65,7 @@ export function ContextProvider({ children }) {
   const [drawerOpen, setdrawerOpen] = React.useState(false);
   const [nextDrawerState, setnextDrawerState] = React.useState(false);
   const [localTransactions, setlocalTransactions] = React.useState([]);
+  const [syncing, setsyncing] = React.useState(false);
 
   const localIncomes = localTransactions.filter(
     (transaction) => transaction.type === "income"
@@ -115,16 +116,16 @@ export function ContextProvider({ children }) {
 
   React.useEffect(() => {
     async function syncTransactions() {
+      setsyncing(true);
       //trying to send synced transactions to server
       if (localTransactions.length > 0) {
         if (await sendSyncedTransactionsToServer(user.token)) {
           reload();
-        } else {
-          console.log("Syncing failed");
         }
       }
+      setsyncing(false);
     }
-    if (user.token) {
+    if (user.token && !syncing) {
       syncTransactions();
     }
   });
