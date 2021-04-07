@@ -171,6 +171,12 @@ export async function removeLocalTransaction(transactionToRemove) {
   return true;
 }
 
+export const sendSyncedTransactionsToServer = async () => {
+  let transactions = (await loadLocalTransactionsFromAsyncStorage()) || [];
+  //request to sync transactions to server
+  console.log(`trying to sync ${transactions.length} transactions to server`);
+};
+
 export {
   loadIncomesFromAsyncStorage,
   loadExpensesFromAsyncStorage,

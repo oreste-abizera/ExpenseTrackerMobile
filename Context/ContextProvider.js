@@ -10,6 +10,7 @@ import {
   loadTransactionsFromAsyncStorage,
   saveTransactionLocally,
   loadLocalTransactionsFromAsyncStorage,
+  sendSyncedTransactionsToServer,
 } from "./functions";
 import { CATEGORIES, USER } from "./AsyncStorageVariables";
 
@@ -174,6 +175,11 @@ export function ContextProvider({ children }) {
   const reload = () => {
     setload(!load);
   };
+
+  //trying to send synced transactions to server
+  if (localTransactions.length > 0) {
+    sendSyncedTransactionsToServer();
+  }
 
   return (
     <Context.Provider
