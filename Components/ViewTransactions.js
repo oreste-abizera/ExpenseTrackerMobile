@@ -3,7 +3,10 @@ import { Text, View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import EStyleSheet from "react-native-extended-stylesheet";
 import Context from "../Context/ContextProvider";
-import { deleteTransaction } from "../Context/functions";
+import {
+  deleteTransaction,
+  removeLocalTransaction,
+} from "../Context/functions";
 
 export default function ViewTransactions({ selectedDate }) {
   const {
@@ -14,7 +17,8 @@ export default function ViewTransactions({ selectedDate }) {
     categories,
   } = React.useContext(Context);
 
-  async function removeTransaction(id) {
+  async function removeTransaction(transaction) {
+    const { _id: id } = transaction;
     await Alert.alert(
       "Confirmation",
       "Do you want to remove this transaction?",
@@ -22,10 +26,18 @@ export default function ViewTransactions({ selectedDate }) {
         {
           text: "Yes",
           onPress: async () => {
-            if (await deleteTransaction(user.token, id)) {
-              reload();
+            if (!id) {
+              if (await removeLocalTransaction(transaction)) {
+                reload();
+              } else {
+                Alert.alert("Error", "deletion failed.");
+              }
             } else {
-              Alert.alert("Error", "deletion failed.");
+              if (await deleteTransaction(user.token, id)) {
+                reload();
+              } else {
+                Alert.alert("Error", "deletion failed.");
+              }
             }
           },
         },
@@ -126,7 +138,7 @@ export default function ViewTransactions({ selectedDate }) {
                   type="font-awesome"
                   color="rgb(32, 137, 220)"
                   size={22}
-                  onPress={() => removeTransaction(transaction._id)}
+                  onPress={() => removeTransaction(transaction)}
                 ></Icon>
               </View>
             );

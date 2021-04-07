@@ -160,6 +160,17 @@ export async function saveTransactionLocally(newTransaction) {
   return true;
 }
 
+export async function removeLocalTransaction(transactionToRemove) {
+  let transactions = (await loadLocalTransactionsFromAsyncStorage()) || [];
+  transactions = transactions.filter(
+    (transaction) =>
+      transaction.date !== transactionToRemove.date &&
+      transaction.note !== transactionToRemove.note
+  );
+  await AsyncStorage.setItem(LOCALTRANSACTIONS, JSON.stringify(transactions));
+  return true;
+}
+
 export {
   loadIncomesFromAsyncStorage,
   loadExpensesFromAsyncStorage,
