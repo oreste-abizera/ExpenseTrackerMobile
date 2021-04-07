@@ -133,3 +133,9 @@ export async function loadCategories() {
 
   return [];
 }
+
+export {
+  loadIncomesFromAsyncStorage,
+  loadExpensesFromAsyncStorage,
+  loadTransactionsFromAsyncStorage,
+};

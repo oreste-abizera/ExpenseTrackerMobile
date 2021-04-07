@@ -5,6 +5,9 @@ import {
   loadExpenses,
   loadIncomes,
   loadCategories,
+  loadIncomesFromAsyncStorage,
+  loadExpensesFromAsyncStorage,
+  loadTransactionsFromAsyncStorage,
 } from "./functions";
 import { Platform } from "react-native";
 
@@ -90,9 +93,17 @@ export function ContextProvider({ children }) {
     loadData();
   }, [user.token, load]);
 
+  async function loadDataFromAsyncStorage() {
+    setcategories(await loadCategoriesFromAsyncStorage());
+    settransactions(await loadTransactionsFromAsyncStorage());
+    setincomes(await loadIncomesFromAsyncStorage());
+    setexpenses(await loadExpensesFromAsyncStorage());
+  }
+
   async function loadData() {
     await setuser(await loadUserFromAsyncStorage());
     if (user.token) {
+      await loadDataFromAsyncStorage();
       settransactions(await loadTransactions(user.token));
       setincomes(await loadIncomes(user.token));
       setexpenses(await loadExpenses(user.token));
