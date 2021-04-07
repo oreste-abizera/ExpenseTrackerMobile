@@ -12,6 +12,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import * as Notifications from "expo-notifications";
 import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
+import Context from "../Context/ContextProvider";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -20,6 +21,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function NotificationsScreen() {
+  const { changeNavigation } = React.useContext(Context);
   const [allowedNotifications, setallowedNotifications] = useState(false);
 
   React.useEffect(() => {
@@ -37,7 +39,7 @@ export default function NotificationsScreen() {
       setallowedNotifications(true);
       await AsyncStorage.setItem("notificationsAllow", JSON.stringify(true));
       await Notifications.cancelAllScheduledNotificationsAsync();
-      Notifications.scheduleNotificationAsync({
+      await Notifications.scheduleNotificationAsync({
         content: {
           title: "Nice One 🎉🎉",
           body: "Notifications are now Enabled.",
@@ -47,7 +49,7 @@ export default function NotificationsScreen() {
         },
       });
 
-      Notifications.scheduleNotificationAsync({
+      await Notifications.scheduleNotificationAsync({
         content: {
           title: "Reminder 🔑🔑",
           body: "Good Afternoon, Have you recorded all of your transactions",
@@ -67,7 +69,7 @@ export default function NotificationsScreen() {
     setallowedNotifications(false);
     await AsyncStorage.setItem("notificationsAllow", JSON.stringify(false));
     await Notifications.cancelAllScheduledNotificationsAsync();
-    Notifications.scheduleNotificationAsync({
+    await Notifications.scheduleNotificationAsync({
       content: {
         title: "OOps!",
         body: "Notifications are now Disabled.",
@@ -104,7 +106,10 @@ export default function NotificationsScreen() {
             <Text style={styles.allowButtonText}>Allow</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.skipButton}>
+          <TouchableOpacity
+            style={styles.skipButton}
+            onPress={() => changeNavigation("Home")}
+          >
             <Text style={styles.skipButtonText}>Skip</Text>
           </TouchableOpacity>
         </>
