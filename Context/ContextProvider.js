@@ -128,6 +128,10 @@ export function ContextProvider({ children }) {
     }
   }
 
+  async function saveLocalTransaction(newTransaction) {
+    console.log(newTransaction);
+  }
+
   function getTotals(incomesP = incomes, expensesP = expenses) {
     let expensesAmount = 0,
       incomeAmount = 0;
@@ -156,6 +160,7 @@ export function ContextProvider({ children }) {
         incomes,
         expenses,
         transactions,
+        saveLocalTransaction,
         reload,
         changeAdd,
         add,

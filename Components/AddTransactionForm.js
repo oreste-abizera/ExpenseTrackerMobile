@@ -21,6 +21,7 @@ const AddTransactionForm = () => {
     changeNavigation,
     reload,
     add,
+    saveLocalTransaction,
   } = React.useContext(Context);
   const [amount, setamount] = React.useState();
   const [mode, setmode] = React.useState();
@@ -105,7 +106,10 @@ const AddTransactionForm = () => {
             handleSubmit();
           },
         },
-        { text: "Save Locally" },
+        {
+          text: "Save Locally",
+          onPress: () => saveLocalTransaction(dataToSend),
+        },
       ]);
       return;
     }
