@@ -16,6 +16,7 @@ export default function SideDrawer() {
     toggleDrawer,
     user,
     changeNavigation,
+    nextDrawerState,
   } = React.useContext(Context);
   let links = [
     { id: 1, title: "Home", path: "Home" },
@@ -37,11 +38,17 @@ export default function SideDrawer() {
 
   React.useEffect(() => {
     Animated.timing(fadeAnim, {
-      toValue: drawerOpen && fadeAnim._value === 0 ? 1 : 0,
-      duration: 1500,
+      toValue: drawerOpen && nextDrawerState && fadeAnim._value === 0 ? 1 : 0,
+      duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim, drawerOpen]);
+
+    Animated.timing(fadeAnim, {
+      toValue: drawerOpen && !nextDrawerState && fadeAnim._value === 0 ? 0 : 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim, nextDrawerState]);
 
   return (
     <Animated.View
@@ -77,12 +84,14 @@ const styles = EStyleSheet.create({
     top: 65,
     left: 0,
     width: "65%",
-    height: "100%",
+    height: "40%",
     padding: "1.5rem",
     backgroundColor: "#fff",
     zIndex: 4,
     borderRightColor: "rgb(32, 137, 220)",
+    borderBottomColor: "rgb(32, 137, 220)",
     borderRightWidth: 5,
+    borderBottomWidth: 5,
   },
 
   link: {

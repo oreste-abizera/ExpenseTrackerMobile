@@ -9,7 +9,6 @@ import {
   loadExpensesFromAsyncStorage,
   loadTransactionsFromAsyncStorage,
 } from "./functions";
-import { Platform } from "react-native";
 
 const Context = React.createContext();
 const defaultUser = { token: null, info: {} };
@@ -60,9 +59,18 @@ export function ContextProvider({ children }) {
   const [load, setload] = React.useState(false);
   const [add, setadd] = React.useState("expense");
   const [drawerOpen, setdrawerOpen] = React.useState(false);
+  const [nextDrawerState, setnextDrawerState] = React.useState(false);
 
   const toggleDrawer = () => {
-    setdrawerOpen(!drawerOpen);
+    if (drawerOpen) {
+      setnextDrawerState(false);
+      setTimeout(() => {
+        setdrawerOpen(!drawerOpen);
+      }, 500);
+    } else {
+      setnextDrawerState(true);
+      setdrawerOpen(!drawerOpen);
+    }
   };
 
   const changeAdd = (newValue) => {
@@ -152,6 +160,7 @@ export function ContextProvider({ children }) {
         changeAdd,
         add,
         drawerOpen,
+        nextDrawerState,
         toggleDrawer,
         loginUser,
         logout,
