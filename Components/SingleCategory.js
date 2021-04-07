@@ -5,11 +5,16 @@ import Context from "../Context/ContextProvider";
 
 export default function SingleCategory({ category, styles }) {
   const { incomes, expenses, getTotals } = React.useContext(Context);
-  const categoryIncomes = incomes.filter(
-    (income) => income.category === category._id
+
+  const categoryIncomes = incomes.filter((income) =>
+    income.category?._id
+      ? income.category._id === category._id
+      : income.category === category._id
   );
-  const categoryExpenses = expenses.filter(
-    (expense) => expense.category === category._id
+  const categoryExpenses = expenses.filter((expense) =>
+    expense.category?._id
+      ? expense.category._id === category._id
+      : expense.category === category._id
   );
   const totals = getTotals(categoryIncomes, categoryExpenses);
   return (
