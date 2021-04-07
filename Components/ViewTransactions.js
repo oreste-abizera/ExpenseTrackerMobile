@@ -6,7 +6,13 @@ import Context from "../Context/ContextProvider";
 import { deleteTransaction } from "../Context/functions";
 
 export default function ViewTransactions({ selectedDate }) {
-  const { getTotals, transactions, user, reload } = React.useContext(Context);
+  const {
+    getTotals,
+    transactions,
+    user,
+    reload,
+    categories,
+  } = React.useContext(Context);
 
   async function removeTransaction(id) {
     await Alert.alert(
@@ -77,44 +83,54 @@ export default function ViewTransactions({ selectedDate }) {
               ? "No transactions done in the selected day"
               : "List of Transactions"}
           </Text>
-          {displayTransactions.map((transaction, index) => (
-            <View
-              key={transaction._id || `transaction-${index}`}
-              style={styles.transaction}
-            >
-              <View style={styles.iconContainer}>
+          {displayTransactions.map((transaction, index) => {
+            if (!transaction.category?._id) {
+              let cat = categories.find(
+                (category) => category._id === transaction.category
+              );
+              if (cat) {
+                transaction.category = cat;
+              }
+            }
+            return (
+              <View
+                key={transaction._id || `transaction-${index}`}
+                style={styles.transaction}
+              >
+                <View style={styles.iconContainer}>
+                  <Icon
+                    name={transaction.category?.icon}
+                    color={transaction.category?.color}
+                    type="font-awesome"
+                  ></Icon>
+                </View>
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 250 }}
+                  ellipsizeMode="tail"
+                >
+                  {transaction.note || transaction.category?.title}
+                </Text>
+                <Text
+                  style={{
+                    color: transaction.type === "expense" ? "red" : "green",
+                  }}
+                >
+                  {transaction.type === "expense"
+                    ? 0 - transaction.amount
+                    : transaction.amount}
+                  Rwf
+                </Text>
                 <Icon
-                  name={transaction.category?.icon}
-                  color={transaction.category?.color}
+                  name="remove"
                   type="font-awesome"
+                  color="rgb(32, 137, 220)"
+                  size={22}
+                  onPress={() => removeTransaction(transaction._id)}
                 ></Icon>
               </View>
-              <Text
-                numberOfLines={1}
-                style={{ width: 250 }}
-                ellipsizeMode="tail"
-              >
-                {transaction.note || transaction.category?.title}
-              </Text>
-              <Text
-                style={{
-                  color: transaction.type === "expense" ? "red" : "green",
-                }}
-              >
-                {transaction.type === "expense"
-                  ? 0 - transaction.amount
-                  : transaction.amount}
-                Rwf
-              </Text>
-              <Icon
-                name="remove"
-                type="font-awesome"
-                color="rgb(32, 137, 220)"
-                size={22}
-                onPress={() => removeTransaction(transaction._id)}
-              ></Icon>
-            </View>
-          ))}
+            );
+          })}
         </View>
       </View>
     </View>

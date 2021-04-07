@@ -112,22 +112,6 @@ export function ContextProvider({ children }) {
     loadData();
   }, [user.token, load]);
 
-  React.useEffect(() => {
-    if (categories.length > 0) {
-      localTransactions.map((transaction) => {
-        if (transaction.category?._id) {
-          return transaction;
-        }
-        let cat = categories.find(
-          (category) => category._id === transaction.category
-        );
-        if (cat) {
-          transaction.category = cat;
-        }
-      });
-    }
-  }, [categories, localTransactions]);
-
   async function loadDataFromAsyncStorage() {
     setcategories(await loadCategoriesFromAsyncStorage());
     settransactions(await loadTransactionsFromAsyncStorage());
