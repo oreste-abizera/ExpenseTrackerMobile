@@ -1,13 +1,14 @@
 import axios from "axios";
 import url from "../utils/url";
 import AsyncStorage from "@react-native-community/async-storage";
+import { TRANSACTIONS, EXPENSES, INCOMES } from "./AsyncStorageVariables";
 
 const syncTransactionsToAsyncStorage = async (newtransactions) => {
-  await AsyncStorage.setItem("transactions", JSON.stringify(newtransactions));
+  await AsyncStorage.setItem(TRANSACTIONS, JSON.stringify(newtransactions));
 };
 
 const loadTransactionsFromAsyncStorage = async () => {
-  let transactions = await AsyncStorage.getItem("transactions");
+  let transactions = await AsyncStorage.getItem(TRANSACTIONS);
   if (transactions) {
     return JSON.parse(transactions);
   }
@@ -15,11 +16,11 @@ const loadTransactionsFromAsyncStorage = async () => {
 };
 
 const syncExpensesToAsyncStorage = async (newExpenses) => {
-  await AsyncStorage.setItem("expenses", JSON.stringify(newExpenses));
+  await AsyncStorage.setItem(EXPENSES, JSON.stringify(newExpenses));
 };
 
 const loadExpensesFromAsyncStorage = async () => {
-  let expenses = await AsyncStorage.getItem("expenses");
+  let expenses = await AsyncStorage.getItem(EXPENSES);
   if (expenses) {
     return JSON.parse(expenses);
   }
@@ -27,11 +28,11 @@ const loadExpensesFromAsyncStorage = async () => {
 };
 
 const syncIncomesToAsyncStorage = async (newIncomes) => {
-  await AsyncStorage.setItem("incomes", JSON.stringify(newIncomes));
+  await AsyncStorage.setItem(INCOMES, JSON.stringify(newIncomes));
 };
 
 const loadIncomesFromAsyncStorage = async () => {
-  let incomes = await AsyncStorage.getItem("incomes");
+  let incomes = await AsyncStorage.getItem(INCOMES);
   if (incomes) {
     return JSON.parse(incomes);
   }

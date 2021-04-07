@@ -9,6 +9,7 @@ import {
   loadExpensesFromAsyncStorage,
   loadTransactionsFromAsyncStorage,
 } from "./functions";
+import { CATEGORIES, USER } from "./AsyncStorageVariables";
 
 const Context = React.createContext();
 const defaultUser = { token: null, info: {} };
@@ -26,22 +27,22 @@ const defaultUser = { token: null, info: {} };
 // };
 
 const syncUserToAsyncStorage = async (newUser) => {
-  await AsyncStorage.setItem("user", JSON.stringify(newUser));
+  await AsyncStorage.setItem(USER, JSON.stringify(newUser));
 };
 
 const loadUserFromAsyncStorage = async () => {
-  let user = await AsyncStorage.getItem("user");
+  let user = await AsyncStorage.getItem(USER);
   if (user) {
     return JSON.parse(user);
   }
   return defaultUser;
 };
 const syncCategoriesToAsyncStorage = async (newCategories) => {
-  await AsyncStorage.setItem("categories", JSON.stringify(newCategories));
+  await AsyncStorage.setItem(CATEGORIES, JSON.stringify(newCategories));
 };
 
 const loadCategoriesFromAsyncStorage = async () => {
-  let categories = await AsyncStorage.getItem("categories");
+  let categories = await AsyncStorage.getItem(CATEGORIES);
   if (categories) {
     return JSON.parse(categories);
   }

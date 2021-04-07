@@ -13,6 +13,7 @@ import * as Notifications from "expo-notifications";
 import { useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import Context from "../Context/ContextProvider";
+import { NOTIFICATIONSALLOW } from "../Context/AsyncStorageVariables";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -26,7 +27,7 @@ export default function NotificationsScreen() {
 
   React.useEffect(() => {
     async function loadStatus() {
-      let response = await AsyncStorage.getItem("notificationsAllow");
+      let response = await AsyncStorage.getItem(NOTIFICATIONSALLOW);
       if (response) {
         await setallowedNotifications(JSON.parse(response));
       }
@@ -37,7 +38,7 @@ export default function NotificationsScreen() {
     const { status } = await Notifications.getPermissionsAsync();
     if (status === "granted") {
       setallowedNotifications(true);
-      await AsyncStorage.setItem("notificationsAllow", JSON.stringify(true));
+      await AsyncStorage.setItem(NOTIFICATIONSALLOW, JSON.stringify(true));
       await Notifications.cancelAllScheduledNotificationsAsync();
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -67,7 +68,7 @@ export default function NotificationsScreen() {
 
   const disableNotifications = async () => {
     setallowedNotifications(false);
-    await AsyncStorage.setItem("notificationsAllow", JSON.stringify(false));
+    await AsyncStorage.setItem(NOTIFICATIONSALLOW, JSON.stringify(false));
     await Notifications.cancelAllScheduledNotificationsAsync();
     await Notifications.scheduleNotificationAsync({
       content: {
