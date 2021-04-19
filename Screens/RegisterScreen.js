@@ -169,6 +169,16 @@ export default function LoginScreen() {
           {errors.password && <Text style={styles.error}>Enter Password</Text>}
         </View>
 
+        <View style={styles.linkView}>
+          <Text>Already have an account?</Text>
+          <Text
+            style={styles.registerLink}
+            onPress={() => changeNavigation("Login")}
+          >
+            Login here
+          </Text>
+        </View>
+
         <TouchableOpacity
           style={styles.submit}
           onPress={handleSubmit(onSubmit)}
@@ -231,5 +241,16 @@ const styles = EStyleSheet.create({
   },
   error: {
     color: "#c51244",
+  },
+  linkView: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: "0.5rem",
+  },
+  registerLink: {
+    marginLeft: "0.5rem",
+    textDecorationLine: "underline",
+    textDecorationStyle: "solid",
+    textDecorationColor: "#000",
   },
 });

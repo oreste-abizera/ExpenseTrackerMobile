@@ -71,7 +71,7 @@ const AddTransactionForm = () => {
     if (!dataToSend.type) {
       error = "Please select Transaction type";
     } else if (!dataToSend.amount) {
-      error = "Please select amount";
+      error = "Please enter amount";
     } else if (!dataToSend.mode) {
       error = "Please select Mode of payment";
     } else if (!dataToSend.category) {
